@@ -9,11 +9,10 @@
 void printTabla(char tabla[N][N], int nivell){
     int i,j;
     for (i =0; i<N; i++){
-      for( int k=0;k<nivell;k++)
-          printf("    ");
-        for(j=0; j<N; j++){
+    	for( int k=0;k<nivell;k++)
+        	printf("    ");
+        for(j=0; j<N; j++)
             printf("%d ",tabla[i][j]);
-        }
         printf("\n");
     }
     printf("\n");
@@ -59,7 +58,7 @@ void ponerFicha(char tabla[N][N], int columna, int jugador){
   }
   for(i=N-1;i>=0;i--)
       if(tabla[i][columna]==0){
-          tabla[i][columna]= jugador;
+          tabla[i][columna] = jugador;
           return;
        }
 }
@@ -97,11 +96,9 @@ int resultadoTabla(char tabla[N][N]){//gana player1 1, gana player2 2, empate 3,
   for( j=0;j<N;j++){
     for( i=0;i<=N-4;i++){
       if(compruebaLinea(tabla[i][j],tabla[i+1][j],tabla[i+2][j],tabla[i+3][j]) ){
-     //   printf("4 en raya en columna, gana jugador %d\n",tabla[i][j]);
         return tabla[i][j];// por columnas
       }
       if(compruebaLinea(tabla[j][i],tabla[j][i+1],tabla[j][i+2],tabla[j][i+3]) ){
-     //   printf("4 en raya en fila, gana jugador %d\n",tabla[j][i]);
         return tabla[j][i];//por filas
       }
     }
@@ -109,27 +106,23 @@ int resultadoTabla(char tabla[N][N]){//gana player1 1, gana player2 2, empate 3,
 
   for( i=0;i<=N-4;i++){// por diagonal inclinado abajo
     for( j=0;j<=N-4;j++){
-      if(compruebaLinea(tabla[i][j],tabla[i+1][j+1], tabla[i+2][j+2], tabla[i+3][j+3])){
-     //   printf("4 en raya en diagonal infer!,gana el jugador %d\n",tabla[i][j]);
-        return tabla[i][j];
+    	if(compruebaLinea(tabla[i][j],tabla[i+1][j+1], tabla[i+2][j+2], tabla[i+3][j+3])){
+    	return tabla[i][j];
       }
     }
   }
 
   for(i=3;i<N;i++){ // por diagonal inclinado arriba
-   for( j=0;j<=N-4;j++){
-     if(compruebaLinea(tabla[i][j],tabla[i-1][j+1], tabla[i-2][j+2], tabla[i-3][j+3])){
-    //   printf("4 en raya en diagonal arriba,gana el jugador %d\n",tabla[i][j]);
-       return tabla[i][j];
+   	for( j=0;j<=N-4;j++){
+      if(compruebaLinea(tabla[i][j],tabla[i-1][j+1], tabla[i-2][j+2], tabla[i-3][j+3])){
+      return tabla[i][j];
      }
     }
   }
  
- if(tablaLlena(tabla)){
-  //  printf("tabla llena empate\n");
-    return 3;
-  }
-//  printf("sigue la partida\n");
+ if(tablaLlena(tabla))
+	return 3;
+  
   return 4;
 }
 
