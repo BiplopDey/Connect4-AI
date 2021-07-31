@@ -5,54 +5,70 @@
 #include "4enratlla.h"
 #include "minimax.h"
 
+void printTabla(char tabla[N][N], int nivel){
+    
+	int i, j;
 
-void printTabla(char tabla[N][N], int nivell){
-    int i,j;
-    for (i =0; i<N; i++){
-    	for( int k=0;k<nivell;k++)
+    for (i=0; i<N; i++){
+    	for( int k=0;k<nivel;k++)
         	printf("    ");
+
         for(j=0; j<N; j++)
             printf("%d ",tabla[i][j]);
+
         printf("\n");
     }
+
     printf("\n");
 }
 
-//Cuestiones de estetica de matriz
-void printTablaEstet(char tabla[N][N], int cara){
-  int c1=2, c2=1;
-  if(cara){
-    c1=1;
-    c2=2;
-  }
-  int i,j;
+void printTablaEstet(char tabla[N][N], int cara){ //Cuestiones de estetica de matriz
+	
+	int c1=2, c2=1;
+	int i,j;
+
+  	if(cara){
+    	c1=1;
+    	c2=2;
+  	}
+  
     for (i =0; i<N; i++){
-        for(j=0; j<N; j++)
-          printf("----");
-        printf("-\n");
+		for(j=0; j<N; j++)
+        	printf("----");
+        
+		printf("-\n");
         printf("|");
+
         for(j=0; j<N; j++){
-          if(tabla[i][j]==c1)
-            printf(" O |");
-          else if(tabla[i][j]==c2)
-            printf(" X |");
-          else
-            printf("   |");
+          	if(tabla[i][j]==c1)
+            	printf(" O |");
+          	else if(tabla[i][j]==c2)
+            	printf(" X |");
+          	else
+            	printf("   |");
         }
+
         printf("\n");
     }
+
     for(j=0; j<N; j++)
-          printf("----");
-        printf("-\n");
+        printf("----");
+
+    printf("-\n");
     printf("|");
+
     for(j=0; j<N; j++)
-          printf(" %d |",j);
-        printf("\n");
+        printf(" %d |",j);
+
+    printf("\n");
+
 }
 
 void ponerFicha(char tabla[N][N], int columna, int jugador){
-  int i;
-  if(!(0<=columna && columna<N)){
+
+  	int i;
+
+  	if(!(0<=columna && columna<N)){
     printf("columna erronea\n");
     return;
   }
@@ -132,7 +148,6 @@ void inicializaTabla(char tabla[N][N]){
       tabla[i][j]=0;
 }
 
-
 void capiarTablero(char tablero[N][N],char padre_tablero[N][N]){
   int i,j;
   for (i =0; i<N; i++){
@@ -158,9 +173,9 @@ int numHijoAColumna(char tablero[N][N],int numHijo){//sirve para responder a
   return 0;//para no dar error
 }
 
-void aplicarTirada(char tablero[N][N],int numHijo, int nivell){//numHijo va de 0
+void aplicarTirada(char tablero[N][N],int numHijo, int nivel){//numHijo va de 0
   int columna= numHijoAColumna(tablero,numHijo);
-  ponerFicha(tablero, columna , nivell%2+1);
+  ponerFicha(tablero, columna , nivel%2+1);
 }
 
 int numHijos(char tablero[N][N]){
@@ -175,8 +190,6 @@ int numHijos(char tablero[N][N]){
   return count;
 }
 
-
-
 int main(void) {
 
 int columna;
@@ -186,7 +199,6 @@ inicializaTabla(tabla);
 Nodo *raiz;
 
 int alfa=-Inf,beta=Inf;
-
 
 printTablaEstet(tabla,0);
 int v[N];
