@@ -16,16 +16,12 @@ double Max_Value(Node *p,double alfa, double beta,int nivel){
     if(v1>p->valor) p->valor=v1;
     if(v1>=beta){
       double v=p->valor;
-     // mostraValor(p->fills[i],nivel+1);
-     // printTabla(p->fills[i]->tauler,nivel+1);
       free(p->fills[i]->fills);
       free(p->fills[i]);
       return v;
     }
     if(v1>alfa)  alfa=v1;
 
-   // mostraValor(p->fills[i],nivel+1);
-   // printTabla(p->fills[i]->tauler,nivel+1);
     if(nivel!=0){// no matar a los hijos de la raiz, pq se necesita luego
       free(p->fills[i]->fills);
       free(p->fills[i]);
@@ -45,15 +41,11 @@ double Min_Value(Node *p,double alfa, double beta,int nivel){
     if(v1< p->valor) p->valor=v1;
     if(v1<= alfa){
       double v=p->valor;
-      //mostraValor(p->fills[i],nivel+1);
-      //printTabla(p->fills[i]->tauler,nivel+1);
       free(p->fills[i]->fills);
       free(p->fills[i]);
       return v;
       }
     if(v1< beta)  beta=v1;
-    //mostraValor(p->fills[i],nivel+1);
-    //printTabla(p->fills[i]->tauler,nivel+1); 
     free(p->fills[i]->fills);
     free(p->fills[i]);
   }
@@ -149,7 +141,6 @@ int funcionHeur(char tabla[N][N]){
  
   return p;
 }
-
 //fin funcion heur
 
 int tiradaRaiz(Node *p){// que columna tirar despues del minimax
