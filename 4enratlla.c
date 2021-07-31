@@ -183,7 +183,7 @@ int columna;
 char tabla[N][N];
 
 inicializaTabla(tabla);
-Node *arrel;
+Node *raiz;
 
 int alfa=-Inf,beta=Inf;
 
@@ -225,15 +225,15 @@ while(resultadoTabla(tabla)==4){
       break;
     }
   else{
-      arrel=creaArrel(tabla);
-      Max_Value(arrel,alfa,beta,0);
-      columna= tiradaArrel(arrel);
-      for(int i=0;i< arrel->n_fills;i++){
-        free(arrel->fills[i]->fills);
-        free(arrel->fills[i]);
+      raiz=creaRaiz(tabla);
+      Max_Value(raiz,alfa,beta,0);
+      columna= tiradaRaiz(raiz);
+      for(int i=0;i< raiz->n_fills;i++){
+        free(raiz->fills[i]->fills);
+        free(raiz->fills[i]);
       } 
-      free(arrel->fills);
-      free(arrel);
+      free(raiz->fills);
+      free(raiz);
   }
   ponerFicha(tabla,columna,jugador%2+1);
   printTablaEstet(tabla,cara);

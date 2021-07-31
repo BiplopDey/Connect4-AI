@@ -76,7 +76,7 @@ Node *creaNode(Node *pare, int numFill, int nivell){
   return p;
 }
 
-Node *creaArrel(char tabla[N][N]){
+Node *creaRaiz(char tabla[N][N]){
   Node *p=malloc(sizeof(Node));
   capiarTauler(p->tauler,tabla);
   p->n_fills=numFills(p->tauler);
@@ -152,7 +152,7 @@ int funcionHeur(char tabla[N][N]){
 
 //fin funcion heur
 
-int tiradaArrel(Node *p){// que columna tirar despues del minimax
+int tiradaRaiz(Node *p){// que columna tirar despues del minimax
   double m;
   int j=0;
   m=p->fills[0]->valor;
