@@ -133,19 +133,19 @@ void inicializaTabla(char tabla[N][N]){
 }
 
 
-void capiarTauler(char tauler[N][N],char pare_tauler[N][N]){
+void capiarTablero(char tablero[N][N],char padre_tablero[N][N]){
   int i,j;
   for (i =0; i<N; i++){
     for(j=0; j<N; j++){
-      tauler[i][j]=pare_tauler[i][j];
+      tablero[i][j]=padre_tablero[i][j];
     }
   }
 }
 
-int numHijoAColumna(char tauler[N][N],int numHijo){//sirve para responder a
+int numHijoAColumna(char tablero[N][N],int numHijo){//sirve para responder a
   // ¿que columna del padre es el hijo numero numHijo?
   int v[N];
-  ultimoElementoColumna(v, tauler);
+  ultimoElementoColumna(v, tablero);
   int count=-1;// lo mas importante entender pq
   for(int i=0;i<N;i++){
     if(v[i]!=-1){// ex v=[-1,1(hijo num 0),-1,4(hijo num 1)]
@@ -158,14 +158,14 @@ int numHijoAColumna(char tauler[N][N],int numHijo){//sirve para responder a
   return 0;//para no dar error
 }
 
-void aplicarTirada(char tauler[N][N],int numHijo, int nivell){//numHijo va de 0
-  int columna= numHijoAColumna(tauler,numHijo);
-  ponerFicha(tauler, columna , nivell%2+1);
+void aplicarTirada(char tablero[N][N],int numHijo, int nivell){//numHijo va de 0
+  int columna= numHijoAColumna(tablero,numHijo);
+  ponerFicha(tablero, columna , nivell%2+1);
 }
 
-int numHijos(char tauler[N][N]){
+int numHijos(char tablero[N][N]){
   int v[N];
-  ultimoElementoColumna(v, tauler);
+  ultimoElementoColumna(v, tablero);
   int count=0;
   for(int i=0;i<N;i++){
     if(v[i]!=-1){
@@ -183,7 +183,7 @@ int columna;
 char tabla[N][N];
 
 inicializaTabla(tabla);
-Node *raiz;
+Nodo *raiz;
 
 int alfa=-Inf,beta=Inf;
 

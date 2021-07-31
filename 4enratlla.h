@@ -4,12 +4,12 @@
 
 #define Inf 10000000
 
-typedef struct node{
-  char tauler[N][N];
-  struct node **hijos;
+typedef struct Nodo{
+  char tablero[N][N];
+  struct Nodo **hijos;
   int n_hijos;
   double valor;
-}Node;
+}Nodo;
 
 void printTabla(char tabla[N][N], int nivell);
 void printTablaEstet(char tabla[N][N], int k);
@@ -20,7 +20,7 @@ int compruebaLinea(int a1,int a2, int a3, int a4);
 int resultadoTabla(char tabla[N][N]);
 void inicializaTabla(char tabla[N][N]);
 
-void capiarTauler(char tauler[N][N],char pare_tauler[N][N]);
-int numHijoAColumna(char tauler[N][N],int numHijo);
-void aplicarTirada(char tauler[N][N],int numHijo, int nivell);
-int numHijos(char tauler[N][N]);
+void capiarTablero(char tablero[N][N],char padre_tablero[N][N]);
+int numHijoAColumna(char tablero[N][N],int numHijo);
+void aplicarTirada(char tablero[N][N],int numHijo, int nivell);
+int numHijos(char tablero[N][N]);
