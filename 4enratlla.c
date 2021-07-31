@@ -293,7 +293,8 @@ int main(void) {
 			}while(v[columna] ==-1 || !(0<=columna && columna<N) );// mientras columna este llena o 
 		// o columna este fuera del intervalo. seguir iterando
 			if(columna==-1)
-			break;
+				break;
+				
 		} else{
 			raiz=creaRaiz(tabla);
 			Max_Value(raiz,alfa,beta,0);
