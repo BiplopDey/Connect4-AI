@@ -1,4 +1,4 @@
-Node *creaNode(Node *pare, int numFill, int nivell);
+Node *creaNode(Node *pare, int numHijo, int nivell);
 Node *creaRaiz(char tabla[N][N]);
 void mostraValor(Node *p,int nivell);
 

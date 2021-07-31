@@ -6,64 +6,64 @@
 
 
 double Max_Value(Node *p,double alfa, double beta,int nivel){
-  if(p->n_fills==0) return(funcionHeur(p->tauler));
+  if(p->n_hijos==0) return(funcionHeur(p->tauler));
   p->valor=-Inf;
 
   double v1;
-  for(int i=0;i<p->n_fills;i++){
-    p->fills[i]=creaNode(p,i,nivel+1);
-    v1=Min_Value(p->fills[i],alfa,beta,nivel+1);
+  for(int i=0;i<p->n_hijos;i++){
+    p->hijos[i]=creaNode(p,i,nivel+1);
+    v1=Min_Value(p->hijos[i],alfa,beta,nivel+1);
     if(v1>p->valor) p->valor=v1;
     if(v1>=beta){
       double v=p->valor;
-      free(p->fills[i]->fills);
-      free(p->fills[i]);
+      free(p->hijos[i]->hijos);
+      free(p->hijos[i]);
       return v;
     }
     if(v1>alfa)  alfa=v1;
 
     if(nivel!=0){// no matar a los hijos de la raiz, pq se necesita luego
-      free(p->fills[i]->fills);
-      free(p->fills[i]);
+      free(p->hijos[i]->hijos);
+      free(p->hijos[i]);
     } 
   }
   return p->valor;      
 }
 
 double Min_Value(Node *p,double alfa, double beta,int nivel){
-  if(p->n_fills==0) return(funcionHeur(p->tauler));
+  if(p->n_hijos==0) return(funcionHeur(p->tauler));
   p->valor=+Inf;
   
   double v1;
-  for(int i=0;i<p->n_fills;i++){
-    p->fills[i]=creaNode(p,i,nivel+1);
-    v1=Max_Value(p->fills[i],alfa,beta,nivel+1);
+  for(int i=0;i<p->n_hijos;i++){
+    p->hijos[i]=creaNode(p,i,nivel+1);
+    v1=Max_Value(p->hijos[i],alfa,beta,nivel+1);
     if(v1< p->valor) p->valor=v1;
     if(v1<= alfa){
       double v=p->valor;
-      free(p->fills[i]->fills);
-      free(p->fills[i]);
+      free(p->hijos[i]->hijos);
+      free(p->hijos[i]);
       return v;
       }
     if(v1< beta)  beta=v1;
-    free(p->fills[i]->fills);
-    free(p->fills[i]);
+    free(p->hijos[i]->hijos);
+    free(p->hijos[i]);
   }
   return p->valor;
 }
 
-Node *creaNode(Node *pare, int numFill, int nivell){
+Node *creaNode(Node *pare, int numHijo, int nivell){
   Node *p=malloc(sizeof(Node));
   capiarTauler(p->tauler,pare->tauler);
-  aplicarTirada(p->tauler,numFill,nivell);//numFill es el numero del hijo, que va de 0 a ...
+  aplicarTirada(p->tauler,numHijo,nivell);//numHijo es el numero del hijo, que va de 0 a ...
 
   if(nivell<K){
-    p->n_fills=numFills(p->tauler);
-    p->fills=malloc(p->n_fills*sizeof(Node*));
+    p->n_hijos=numHijos(p->tauler);
+    p->hijos=malloc(p->n_hijos*sizeof(Node*));
   }
   else{
-    p->n_fills=0;
-    p->fills= NULL;//malloc(0);
+    p->n_hijos=0;
+    p->hijos= NULL;//malloc(0);
   }
   return p;
 }
@@ -71,9 +71,9 @@ Node *creaNode(Node *pare, int numFill, int nivell){
 Node *creaRaiz(char tabla[N][N]){
   Node *p=malloc(sizeof(Node));
   capiarTauler(p->tauler,tabla);
-  p->n_fills=numFills(p->tauler);
+  p->n_hijos=numHijos(p->tauler);
   
-  p->fills=malloc(p->n_fills*sizeof(Node*));
+  p->hijos=malloc(p->n_hijos*sizeof(Node*));
   
   return p;
 }
@@ -146,13 +146,13 @@ int funcionHeur(char tabla[N][N]){
 int tiradaRaiz(Node *p){// que columna tirar despues del minimax
   double m;
   int j=0;
-  m=p->fills[0]->valor;
-  for(int i=1;i<p->n_fills;i++){
-    if(p->fills[i]->valor>m){
-      m=p->fills[i]->valor;
+  m=p->hijos[0]->valor;
+  for(int i=1;i<p->n_hijos;i++){
+    if(p->hijos[i]->valor>m){
+      m=p->hijos[i]->valor;
       j=i;
     }
   }
   // el hijo numero j que columna corresponde de p->tauler?
-  return numFillAColumna(p->tauler, j);
+  return numHijoAColumna(p->tauler, j);
 }

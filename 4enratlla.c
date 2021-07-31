@@ -142,8 +142,8 @@ void capiarTauler(char tauler[N][N],char pare_tauler[N][N]){
   }
 }
 
-int numFillAColumna(char tauler[N][N],int numFill){//sirve para responder a
-  // ¿que columna del padre es el hijo numero numFill?
+int numHijoAColumna(char tauler[N][N],int numHijo){//sirve para responder a
+  // ¿que columna del padre es el hijo numero numHijo?
   int v[N];
   ultimoElementoColumna(v, tauler);
   int count=-1;// lo mas importante entender pq
@@ -151,19 +151,19 @@ int numFillAColumna(char tauler[N][N],int numFill){//sirve para responder a
     if(v[i]!=-1){// ex v=[-1,1(hijo num 0),-1,4(hijo num 1)]
       count++;
     }
-    if(count==numFill){
+    if(count==numHijo){
       return i;
     }
   }
   return 0;//para no dar error
 }
 
-void aplicarTirada(char tauler[N][N],int numFill, int nivell){//numFill va de 0
-  int columna= numFillAColumna(tauler,numFill);
+void aplicarTirada(char tauler[N][N],int numHijo, int nivell){//numHijo va de 0
+  int columna= numHijoAColumna(tauler,numHijo);
   ponerFicha(tauler, columna , nivell%2+1);
 }
 
-int numFills(char tauler[N][N]){
+int numHijos(char tauler[N][N]){
   int v[N];
   ultimoElementoColumna(v, tauler);
   int count=0;
@@ -228,11 +228,11 @@ while(resultadoTabla(tabla)==4){
       raiz=creaRaiz(tabla);
       Max_Value(raiz,alfa,beta,0);
       columna= tiradaRaiz(raiz);
-      for(int i=0;i< raiz->n_fills;i++){
-        free(raiz->fills[i]->fills);
-        free(raiz->fills[i]);
+      for(int i=0;i< raiz->n_hijos;i++){
+        free(raiz->hijos[i]->hijos);
+        free(raiz->hijos[i]);
       } 
-      free(raiz->fills);
+      free(raiz->hijos);
       free(raiz);
   }
   ponerFicha(tabla,columna,jugador%2+1);

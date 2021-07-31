@@ -6,8 +6,8 @@
 
 typedef struct node{
   char tauler[N][N];
-  struct node **fills;
-  int n_fills;
+  struct node **hijos;
+  int n_hijos;
   double valor;
 }Node;
 
@@ -21,6 +21,6 @@ int resultadoTabla(char tabla[N][N]);
 void inicializaTabla(char tabla[N][N]);
 
 void capiarTauler(char tauler[N][N],char pare_tauler[N][N]);
-int numFillAColumna(char tauler[N][N],int numFill);
-void aplicarTirada(char tauler[N][N],int numFill, int nivell);
-int numFills(char tauler[N][N]);
+int numHijoAColumna(char tauler[N][N],int numHijo);
+void aplicarTirada(char tauler[N][N],int numHijo, int nivell);
+int numHijos(char tauler[N][N]);
