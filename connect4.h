@@ -7,8 +7,8 @@
 typedef struct Nodo{
 
   	char tablero[N][N];
-  	struct Nodo **hijos;
-  	int n_hijos;
+  	struct Nodo **sons;
+  	int n_sons;
   	double valor;
 
 } Nodo;
@@ -23,6 +23,6 @@ int resultadoTable(char table[N][N]);
 void inicializaTable(char table[N][N]);
 
 void capiarTablero(char tablero[N][N], char padre_tablero[N][N]);
-int numHijoAColumn(char tablero[N][N], int numHijo);
-void aplicarTirada(char tablero[N][N], int numHijo, int level);
-int numHijos(char tablero[N][N]);
+int numSonAColumn(char tablero[N][N], int numSon);
+void aplicarTirada(char tablero[N][N], int numSon, int level);
+int numSons(char tablero[N][N]);

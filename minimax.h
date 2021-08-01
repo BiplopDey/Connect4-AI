@@ -1,4 +1,4 @@
-Nodo *creaNodo(Nodo *padre, int numHijo, int level);
+Nodo *creaNodo(Nodo *padre, int numSon, int level);
 Nodo *creaRaiz(char table[N][N]);
 void mostraValor(Nodo *p, int level);
 

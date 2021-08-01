@@ -6,32 +6,32 @@
 
 
 double Max_Value(Nodo *p,double alfa, double beta,int level){
-	if(p->n_hijos==0) 
+	if(p->n_sons==0) 
   		return(funcionHeur(p->tablero));
   			p->valor=-Inf;
 
   	double v1;
-	for(int i=0;i<p->n_hijos;i++){
+	for(int i=0;i<p->n_sons;i++){
 
-		p->hijos[i]=creaNodo(p,i,level+1);
-    	v1=Min_Value(p->hijos[i],alfa,beta,level+1);
+		p->sons[i]=creaNodo(p,i,level+1);
+    	v1=Min_Value(p->sons[i],alfa,beta,level+1);
 
     	if(v1>p->valor) 
 			p->valor=v1;
 
     	if(v1>=beta){
       		double v=p->valor;
-      		free(p->hijos[i]->hijos);
-      		free(p->hijos[i]);
+      		free(p->sons[i]->sons);
+      		free(p->sons[i]);
       		return v;
     	}
 
     	if(v1>alfa)  
 			alfa=v1;
 
-    	if(level!=0){// no matar a los hijos de la raiz, porque se necesita luego
-      		free(p->hijos[i]->hijos);
-      		free(p->hijos[i]);
+    	if(level!=0){// no matar a los sons de la raiz, porque se necesita luego
+      		free(p->sons[i]->sons);
+      		free(p->sons[i]);
     	}
   	}
 
@@ -41,31 +41,31 @@ double Max_Value(Nodo *p,double alfa, double beta,int level){
 
 double Min_Value(Nodo *p,double alfa, double beta,int level){
 
-	if(p->n_hijos==0) 
+	if(p->n_sons==0) 
 		return(funcionHeur(p->tablero));
 
   	p->valor=+Inf;
   	double v1;
 	
-  	for(int i=0;i<p->n_hijos;i++){
-    	p->hijos[i]=creaNodo(p,i,level+1);
-    	v1=Max_Value(p->hijos[i],alfa,beta,level+1);
+  	for(int i=0;i<p->n_sons;i++){
+    	p->sons[i]=creaNodo(p,i,level+1);
+    	v1=Max_Value(p->sons[i],alfa,beta,level+1);
     	
 		if(v1< p->valor) 
 			p->valor=v1;
     	
 		if(v1<= alfa){
       		double v=p->valor;
-      		free(p->hijos[i]->hijos);
-      		free(p->hijos[i]);
+      		free(p->sons[i]->sons);
+      		free(p->sons[i]);
       		return v;
       }
 
     if(v1< beta)  
 		beta=v1;
 
-    free(p->hijos[i]->hijos);
-    free(p->hijos[i]);
+    free(p->sons[i]->sons);
+    free(p->sons[i]);
 
   }
 
@@ -73,19 +73,19 @@ double Min_Value(Nodo *p,double alfa, double beta,int level){
 
 }
 
-Nodo *creaNodo(Nodo *padre, int numHijo, int level){
+Nodo *creaNodo(Nodo *padre, int numSon, int level){
 
   Nodo *p=malloc(sizeof(Nodo));
   capiarTablero(p->tablero,padre->tablero);
-  aplicarTirada(p->tablero,numHijo,level);//numHijo es el numero del hijo, que va de 0 a ...
+  aplicarTirada(p->tablero,numSon,level);//numSon es el numero del son, que va de 0 a ...
 
   if(level<K){
-    p->n_hijos=numHijos(p->tablero);
-    p->hijos=malloc(p->n_hijos*sizeof(Nodo*));
+    p->n_sons=numSons(p->tablero);
+    p->sons=malloc(p->n_sons*sizeof(Nodo*));
   }
   else{
-    p->n_hijos=0;
-    p->hijos= NULL;//malloc(0);
+    p->n_sons=0;
+    p->sons= NULL;//malloc(0);
   }
 
   return p;
@@ -96,8 +96,8 @@ Nodo *creaRaiz(char table[N][N]){
 
   Nodo *p=malloc(sizeof(Nodo));
   capiarTablero(p->tablero,table);
-  p->n_hijos=numHijos(p->tablero);
-  p->hijos=malloc(p->n_hijos*sizeof(Nodo*));
+  p->n_sons=numSons(p->tablero);
+  p->sons=malloc(p->n_sons*sizeof(Nodo*));
   
   return p;
 
@@ -210,15 +210,15 @@ int tiradaRaiz(Nodo *p){// que column tirar despues del minimax
   
   	double m;
   	int j=0;
-  	m=p->hijos[0]->valor;
+  	m=p->sons[0]->valor;
 
-  	for(int i=1;i<p->n_hijos;i++){
-		if(p->hijos[i]->valor>m){
-      		m=p->hijos[i]->valor;
+  	for(int i=1;i<p->n_sons;i++){
+		if(p->sons[i]->valor>m){
+      		m=p->sons[i]->valor;
       		j=i;
     	}
   	}
-  	// el hijo numero j que column corresponde de p->tablero?
-  	return numHijoAColumn(p->tablero, j);
+  	// el son numero j que column corresponde de p->tablero?
+  	return numSonAColumn(p->tablero, j);
 
 }

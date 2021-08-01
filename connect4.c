@@ -197,18 +197,18 @@ void capiarTablero(char tablero[N][N],char padre_tablero[N][N]){
 
 }
 
-int numHijoAColumn(char tablero[N][N],int numHijo){//sirve para responder a
-  // ¿que column del padre es el hijo numero numHijo?
+int numSonAColumn(char tablero[N][N],int numSon){//sirve para responder a
+  // ¿que column del padre es el son numero numSon?
   	int v[N];
   	ultimoElementoColumn(v, tablero);
   	int count=-1;// lo mas importante entender pq
   
   	for(int i=0;i<N;i++){
-    	if(v[i]!=-1){// ex v=[-1,1(hijo num 0),-1,4(hijo num 1)]
+    	if(v[i]!=-1){// ex v=[-1,1(son num 0),-1,4(son num 1)]
       		count++;
     	}
 
-    	if(count==numHijo){
+    	if(count==numSon){
       		return i;
     	}
   	}
@@ -217,14 +217,14 @@ int numHijoAColumn(char tablero[N][N],int numHijo){//sirve para responder a
 
 }
 
-void aplicarTirada(char tablero[N][N], int numHijo, int level){ // numHijo va de 0
+void aplicarTirada(char tablero[N][N], int numSon, int level){ // numSon va de 0
   
-  	int column = numHijoAColumn(tablero,numHijo);
+  	int column = numSonAColumn(tablero,numSon);
   	ponerFicha(tablero, column , level%2+1);
 
 }
 
-int numHijos(char tablero[N][N]){
+int numSons(char tablero[N][N]){
 
   	int v[N];
   	ultimoElementoColumn(v, tablero);
@@ -300,12 +300,12 @@ int main(void) {
 			Max_Value(raiz,alfa,beta,0);
 			column= tiradaRaiz(raiz);
 
-				for(int i=0;i< raiz->n_hijos;i++){
-					free(raiz->hijos[i]->hijos);
-					free(raiz->hijos[i]);
+				for(int i=0;i< raiz->n_sons;i++){
+					free(raiz->sons[i]->sons);
+					free(raiz->sons[i]);
 				}
 				
-			free(raiz->hijos);
+			free(raiz->sons);
 			free(raiz);
 	}
 
