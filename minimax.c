@@ -5,18 +5,19 @@
 #include "minimax.h"
 
 
-double Max_Value(Node *p,double alfa, double beta,int level){
+double Max_Value(Node *p, double alpha, double beta, int level){
+	
 	if(p->n_sons==0) 
   		return(functionHeur(p->board));
-  			p->value=-Inf;
-
+  	
+	p->value=-Inf;
   	double v1;
-	for(int i=0;i<p->n_sons;i++){
 
+	for(int i=0; i<p->n_sons; i++){
 		p->sons[i]=createNode(p,i,level+1);
-    	v1=Min_Value(p->sons[i],alfa,beta,level+1);
+    	v1=Min_Value(p->sons[i],alpha,beta,level+1);
 
-    	if(v1>p->value) 
+    	if(v1 > p->value) 
 			p->value=v1;
 
     	if(v1>=beta){
@@ -26,8 +27,8 @@ double Max_Value(Node *p,double alfa, double beta,int level){
       		return v;
     	}
 
-    	if(v1>alfa)  
-			alfa=v1;
+    	if(v1>alpha)  
+			alpha=v1;
 
     	if(level!=0){// no matar a los sons de la root, porque se necesita luego
       		free(p->sons[i]->sons);
@@ -39,7 +40,7 @@ double Max_Value(Node *p,double alfa, double beta,int level){
 
 }
 
-double Min_Value(Node *p,double alfa, double beta,int level){
+double Min_Value(Node *p,double alpha, double beta,int level){
 
 	if(p->n_sons==0) 
 		return(functionHeur(p->board));
@@ -49,12 +50,12 @@ double Min_Value(Node *p,double alfa, double beta,int level){
 	
   	for(int i=0;i<p->n_sons;i++){
     	p->sons[i]=createNode(p,i,level+1);
-    	v1=Max_Value(p->sons[i],alfa,beta,level+1);
+    	v1=Max_Value(p->sons[i],alpha,beta,level+1);
     	
 		if(v1< p->value) 
 			p->value=v1;
     	
-		if(v1<= alfa){
+		if(v1<= alpha){
       		double v=p->value;
       		free(p->sons[i]->sons);
       		free(p->sons[i]);
@@ -77,7 +78,7 @@ Node *createNode(Node *father, int numSon, int level){
 
   Node *p=malloc(sizeof(Node));
   copyBoard(p->board,father->board);
-  aplicarTirada(p->board,numSon,level);//numSon es el numero del son, que va de 0 a ...
+  tokenRoll(p->board,numSon,level);//numSon es el numero del son, que va de 0 a ...
 
   if(level<K){
     p->n_sons=numSons(p->board);

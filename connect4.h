@@ -14,7 +14,7 @@ typedef struct Node{
 } Node;
 
 void printTable(char table[N][N], int level);
-void printTableEstet(char table[N][N], int k);
+void printTableEsthetic(char table[N][N], int k);
 void putToken(char table[N][N], int column, int player);
 void ultimoElementoColumn(int v[N], char table[N][N]);
 int tableFull(char table[N][N]);
@@ -24,5 +24,5 @@ void initializeTable(char table[N][N]);
 
 void copyBoard(char board[N][N], char father_board[N][N]);
 int numSonToColumn(char board[N][N], int numSon);
-void aplicarTirada(char board[N][N], int numSon, int level);
+void tokenRoll(char board[N][N], int numSon, int level);
 int numSons(char board[N][N]);

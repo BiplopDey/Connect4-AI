@@ -22,7 +22,7 @@ void printTable(char table[N][N], int level){
     printf("\n");
 }
 
-void printTableEstet(char table[N][N], int cara){ // Cuestiones de estetica de matriz
+void printTableEsthetic(char table[N][N], int cara){ // Cuestiones de estetica de matriz
 	
 	int c1=2, c2=1;
 	int i,j;
@@ -217,7 +217,7 @@ int numSonToColumn(char board[N][N], int numSon){//sirve para responder a
 
 }
 
-void aplicarTirada(char board[N][N], int numSon, int level){ // numSon va de 0
+void tokenRoll(char board[N][N], int numSon, int level){ // numSon va de 0
   
   	int column = numSonToColumn(board,numSon);
   	putToken(board, column , level%2+1);
@@ -248,9 +248,9 @@ int main(void) {
 	initializeTable(table);
 	Node *root;
 
-	int alfa=-Inf,beta=Inf;
+	int alpha=-Inf,beta=Inf;
 
-	printTableEstet(table,0);
+	printTableEsthetic(table,0);
 	int v[N];
 	int player=1; // player=2 , empieza humano
                // juagador=1 empezar el ordenador
@@ -297,7 +297,7 @@ int main(void) {
 				
 		} else{
 			root=createRoot(table);
-			Max_Value(root,alfa,beta,0);
+			Max_Value(root,alpha,beta,0);
 			column= tossRoot(root);
 
 				for(int i=0;i< root->n_sons;i++){
@@ -310,7 +310,7 @@ int main(void) {
 	}
 
 	putToken(table,column,player%2+1);
-	printTableEstet(table,cara);
+	printTableEsthetic(table,cara);
 	player++;
 
 	switch (resultTable(table)) {
