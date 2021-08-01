@@ -133,7 +133,7 @@ int checkLineHeur(int a1,int a2, int a3, int a4,int player,int raya){
 }
 
 
-int resultadoTableHeur(char table[N][N], int player, int raya){// player 1 1, player 2 2, empate 3, nada 4
+int resultTableHeur(char table[N][N], int player, int raya){// player 1 1, player 2 2, empate 3, nada 4
   int i, j;
   int p=0; 
 
@@ -182,24 +182,24 @@ int resultadoTableHeur(char table[N][N], int player, int raya){// player 1 1, pl
 int funcionHeur(char table[N][N]){
   
 	if(K==2){
-    	if(resultadoTableHeur(table,2,4)) 
+    	if(resultTableHeur(table,2,4)) 
 			return 100000;
-    	else if(resultadoTableHeur(table,1,4)) 
-			return -100000*resultadoTableHeur(table,1,4);
+    	else if(resultTableHeur(table,1,4)) 
+			return -100000*resultTableHeur(table,1,4);
   	}
   
-  	if(resultadoTableHeur(table,1,4)) //si el humano hace 4 en raya
-  		return -100000*resultadoTableHeur(table,1,4);
-  	else if(resultadoTableHeur(table,2,4)) // si el ordenador hace 4 en raya
+  	if(resultTableHeur(table,1,4)) //si el humano hace 4 en raya
+  		return -100000*resultTableHeur(table,1,4);
+  	else if(resultTableHeur(table,2,4)) // si el ordenador hace 4 en raya
   		return 100000;
 
   	int p=0;
-    p+=resultadoTableHeur(table,2,3)*10;
+    p+=resultTableHeur(table,2,3)*10;
     //penalizar si el humano tien 3 en raya
-    p+=resultadoTableHeur(table,1,3)*(-10);
-    p+=resultadoTableHeur(table,2,2)*2;
+    p+=resultTableHeur(table,1,3)*(-10);
+    p+=resultTableHeur(table,2,2)*2;
     //penalizar si el humano tien 2 en raya
-    p+=resultadoTableHeur(table,1,2)*(-2);
+    p+=resultTableHeur(table,1,2)*(-2);
  
  	return p;
 

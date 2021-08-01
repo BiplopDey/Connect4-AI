@@ -118,7 +118,7 @@ int checkLine(int a1,int a2, int a3, int a4){
 
 }
 
-int resultadoTable(char table[N][N]){ // gana player1 1, gana player2 2, empate 3, nada 4
+int resultTable(char table[N][N]){ // gana player1 1, gana player2 2, empate 3, nada 4
   
 	int i,j;
 
@@ -280,7 +280,7 @@ int main(void) {
 	else 
 		cara=0;
 
-	while(resultadoTable(table)==4){
+	while(resultTable(table)==4){
 		ultimoElementoColumn(v, table);
 		
 		if(player%2+1==1){ // si player es 1 toca al humano
@@ -313,7 +313,7 @@ int main(void) {
 	printTableEstet(table,cara);
 	player++;
 
-	switch (resultadoTable(table)) {
+	switch (resultTable(table)) {
 		case 1:
 			printf("4 en raya! Has ganado!\n");
 			break;

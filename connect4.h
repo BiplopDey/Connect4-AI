@@ -19,7 +19,7 @@ void ponerFicha(char table[N][N], int column, int player);
 void ultimoElementoColumn(int v[N], char table[N][N]);
 int tableFull(char table[N][N]);
 int checkLine(int a1, int a2, int a3, int a4);
-int resultadoTable(char table[N][N]);
+int resultTable(char table[N][N]);
 void initializeTable(char table[N][N]);
 
 void copyBoard(char board[N][N], char father_board[N][N]);
