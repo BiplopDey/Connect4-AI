@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "4enratlla.h"
+#include "connect4.h"
 #include "minimax.h"
 
 void printTabla(char tabla[N][N], int nivel){
