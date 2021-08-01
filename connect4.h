@@ -15,7 +15,7 @@ typedef struct Node{
 
 void printTable(char table[N][N], int level);
 void printTableEstet(char table[N][N], int k);
-void ponerFicha(char table[N][N], int column, int player);
+void putToken(char table[N][N], int column, int player);
 void ultimoElementoColumn(int v[N], char table[N][N]);
 int tableFull(char table[N][N]);
 int checkLine(int a1, int a2, int a3, int a4);

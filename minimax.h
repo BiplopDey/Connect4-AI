@@ -7,5 +7,5 @@ double Max_Value(Node *p, double alfa, double beta, int level);
 
 int checkLineHeur(int a1, int a2, int a3, int a4, int player, int lengthConnect);
 int resultTableHeur(char table[N][N], int player, int lengthConnect);
-int funcionHeur(char table[N][N]);
-int tiradaRoot(Node *p);
+int functionHeur(char table[N][N]);
+int tossRoot(Node *p);

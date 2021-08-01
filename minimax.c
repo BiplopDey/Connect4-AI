@@ -7,7 +7,7 @@
 
 double Max_Value(Node *p,double alfa, double beta,int level){
 	if(p->n_sons==0) 
-  		return(funcionHeur(p->board));
+  		return(functionHeur(p->board));
   			p->value=-Inf;
 
   	double v1;
@@ -42,7 +42,7 @@ double Max_Value(Node *p,double alfa, double beta,int level){
 double Min_Value(Node *p,double alfa, double beta,int level){
 
 	if(p->n_sons==0) 
-		return(funcionHeur(p->board));
+		return(functionHeur(p->board));
 
   	p->value=+Inf;
   	double v1;
@@ -112,7 +112,7 @@ void showValue(Node *p,int level) {
 
 }
 
-//inicion funcion heur
+//inicion function heur
 int checkLineHeur(int a1, int a2, int a3, int a4, int player, int lengthConnect){
     
 	switch (lengthConnect) {
@@ -179,7 +179,7 @@ int resultTableHeur(char table[N][N], int player, int lengthConnect){// player 1
 
 }
 
-int funcionHeur(char table[N][N]){
+int functionHeur(char table[N][N]){
   
 	if(K==2){
     	if(resultTableHeur(table,2,4)) 
@@ -204,9 +204,9 @@ int funcionHeur(char table[N][N]){
  	return p;
 
 }
-//fin funcion heur
+//fin function heur
 
-int tiradaRoot(Node *p){// que column tirar despues del minimax
+int tossRoot(Node *p){// que column tirar despues del minimax
   
   	double m;
   	int j=0;

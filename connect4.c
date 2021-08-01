@@ -64,7 +64,7 @@ void printTableEstet(char table[N][N], int cara){ // Cuestiones de estetica de m
 
 }
 
-void ponerFicha(char table[N][N], int column, int player){
+void putToken(char table[N][N], int column, int player){
 
   	int i;
 
@@ -220,7 +220,7 @@ int numSonToColumn(char board[N][N], int numSon){//sirve para responder a
 void aplicarTirada(char board[N][N], int numSon, int level){ // numSon va de 0
   
   	int column = numSonToColumn(board,numSon);
-  	ponerFicha(board, column , level%2+1);
+  	putToken(board, column , level%2+1);
 
 }
 
@@ -298,7 +298,7 @@ int main(void) {
 		} else{
 			root=createRoot(table);
 			Max_Value(root,alfa,beta,0);
-			column= tiradaRoot(root);
+			column= tossRoot(root);
 
 				for(int i=0;i< root->n_sons;i++){
 					free(root->sons[i]->sons);
@@ -309,7 +309,7 @@ int main(void) {
 			free(root);
 	}
 
-	ponerFicha(table,column,player%2+1);
+	putToken(table,column,player%2+1);
 	printTableEstet(table,cara);
 	player++;
 
