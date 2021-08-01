@@ -81,7 +81,7 @@ void putToken(char table[N][N], int column, int player){
 
 }
 
-void ultimoElementoColumn(int v[N], char table[N][N]){
+void lastTokenColumn(int v[N], char table[N][N]){
   
   	int i;
 
@@ -101,7 +101,7 @@ void ultimoElementoColumn(int v[N], char table[N][N]){
 int tableFull( char table[N][N]){
 
   	int v[N];
-  	ultimoElementoColumn(v, table);
+  	lastTokenColumn(v, table);
 	
   	for(int j=0;j<N;j++)
 		if(v[j]!=-1)
@@ -200,7 +200,7 @@ void copyBoard(char board[N][N], char father_board[N][N]){
 int numSonToColumn(char board[N][N], int numSon){//sirve para responder a
   // ¿que column del father es el son numero numSon?
   	int v[N];
-  	ultimoElementoColumn(v, board);
+  	lastTokenColumn(v, board);
   	int count=-1;// lo mas importante entender pq
   
   	for(int i=0;i<N;i++){
@@ -227,7 +227,7 @@ void tokenRoll(char board[N][N], int numSon, int level){ // numSon va de 0
 int numSons(char board[N][N]){
 
   	int v[N];
-  	ultimoElementoColumn(v, board);
+  	lastTokenColumn(v, board);
   	int count=0;
 
   	for(int i=0;i<N;i++){
@@ -281,7 +281,7 @@ int main(void) {
 		cara=0;
 
 	while(resultTable(table)==4){
-		ultimoElementoColumn(v, table);
+		lastTokenColumn(v, table);
 		
 		if(player%2+1==1){ // si player es 1 toca al humano
 			do{
