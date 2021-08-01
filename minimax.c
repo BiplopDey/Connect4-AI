@@ -30,7 +30,7 @@ double Max_Value(Node *p, double alpha, double beta, int level){
     	if(v1>alpha)  
 			alpha=v1;
 
-    	if(level!=0){// no matar a los sons de la root, porque se necesita luego
+    	if(level!=0){// don't kill the sons of the root, because is needed
       		free(p->sons[i]->sons);
       		free(p->sons[i]);
     	}
@@ -78,7 +78,7 @@ Node *createNode(Node *father, int numSon, int level){
 
   Node *p=malloc(sizeof(Node));
   copyBoard(p->board,father->board);
-  tokenRoll(p->board,numSon,level);//numSon es el numero del son, que va de 0 a ...
+  tokenRoll(p->board,numSon,level);//numSon is the son's number, that goes between  0 to ...
 
   if(level<K){
     p->n_sons=numSons(p->board);
@@ -113,11 +113,11 @@ void showValue(Node *p,int level) {
 
 }
 
-//inicion function heur
+// start function heur
 int checkLineHeur(int a1, int a2, int a3, int a4, int player, int lengthConnect){
     
 	switch (lengthConnect) {
-    	case 2: // escribir mas cosas para penalizar 2 en raya y un vacio al lado
+    	case 2: 
             return (a1==player && a2==player && a3==0) 
 				+ (a2==player && a3==player && a4==0)
 				+ (a1==0 && a2==player && a3==player) 
@@ -129,25 +129,25 @@ int checkLineHeur(int a1, int a2, int a3, int a4, int player, int lengthConnect)
             return (a1==player && a2==player && a3==player && a4==player);
         }
 
-    return 0;//pos si a caso
+    return 0; // just in cas
 
 }
 
 
-int resultTableHeur(char table[N][N], int player, int lengthConnect){// player 1 1, player 2 2, empate 3, nada 4
+int resultTableHeur(char table[N][N], int player, int lengthConnect){// player 1 1, player 2 2, draw 3, nothing 4
   int i, j;
   int p=0; 
 
   for(j=0;j<N;j++)
     for(i=0;i<=N-4;i++){
-        p+=checkLineHeur(// por columns
+        p+=checkLineHeur( // by columns
 			table[i][j],
 			table[i+1][j],
 			table[i+2][j],
 			table[i+3][j],
 			player,
 			lengthConnect);
-        p+=checkLineHeur(// por filas
+        p+=checkLineHeur( // by rows
 			table[j][i],
 			table[j][i+1],
 			table[j][i+2],
@@ -156,7 +156,7 @@ int resultTableHeur(char table[N][N], int player, int lengthConnect){// player 1
 			lengthConnect);
       }
 
-  	for( i=0;i<=N-4;i++)// por diagonal inclinado abajo
+  	for( i=0;i<=N-4;i++) // by diagonal inclined down
     	for( j=0;j<=N-4;j++)
         	p+=checkLineHeur(
 				table[i][j],
@@ -166,7 +166,7 @@ int resultTableHeur(char table[N][N], int player, int lengthConnect){// player 1
 				player,
 				lengthConnect);
 
-  	for(i=3;i<N;i++) // por diagonal inclinado arriba
+  	for(i=3;i<N;i++) // by diagonal inclined up
    		for( j=0;j<=N-4;j++)
        		p+=checkLineHeur(
 				   table[i][j],
@@ -189,25 +189,25 @@ int functionHeur(char table[N][N]){
 			return -100000*resultTableHeur(table,1,4);
   	}
   
-  	if(resultTableHeur(table,1,4)) //si el humano hace 4 en raya
+  	if(resultTableHeur(table,1,4)) //if human makes connect 4
   		return -100000*resultTableHeur(table,1,4);
-  	else if(resultTableHeur(table,2,4)) // si el ordenador hace 4 en raya
+  	else if(resultTableHeur(table,2,4)) // if machine makes connect 4
   		return 100000;
 
   	int p=0;
     p+=resultTableHeur(table,2,3)*10;
-    //penalizar si el humano tien 3 en raya
+    // penalize if human makes connect 3
     p+=resultTableHeur(table,1,3)*(-10);
     p+=resultTableHeur(table,2,2)*2;
-    //penalizar si el humano tien 2 en raya
+    // penalize if human makes connect 4
     p+=resultTableHeur(table,1,2)*(-2);
  
  	return p;
 
 }
-//fin function heur
+//End function heur
 
-int tossRoot(Node *p){// que column tirar despues del minimax
+int tossRoot(Node *p){// what column toss before  minimax
   
   	double m;
   	int j=0;
@@ -219,7 +219,7 @@ int tossRoot(Node *p){// que column tirar despues del minimax
       		j=i;
     	}
   	}
-  	// el son numero j que column corresponde de p->board?
+  	// the son number j what column correspond to the p->board?
   	return numSonToColumn(p->board, j);
 
 }

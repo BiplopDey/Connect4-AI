@@ -1,6 +1,6 @@
 
 #define N 7
-#define K 6 // K=level, profundidad arbol
+#define K 6 // K=level, depth tree
 
 #define Inf 10000000
 

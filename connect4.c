@@ -86,7 +86,7 @@ void lastTokenColumn(int v[N], char table[N][N]){
   	int i;
 
   	for(int j=0; j<N;j++){
-    	v[j]=-1;// column j esta llena hasta que se demuestre lo contrario
+    	v[j]=-1;// column j is full until the contrary proven
     	
 		for(i=N-1;i>=0;i--){
       		if(table[i][j]==0){
@@ -105,9 +105,9 @@ int tableFull( char table[N][N]){
 	
   	for(int j=0;j<N;j++)
 		if(v[j]!=-1)
-      		return 0; // 0=es falso, la table no esta llena
+      		return 0; // 0 = is false, table is not full
 
-  return 1; // cierto, table llena
+  return 1; // true, table full
 
 }
 
@@ -118,7 +118,7 @@ int checkLine(int a1,int a2, int a3, int a4){
 
 }
 
-int resultTable(char table[N][N]){ // gana player1 1, gana player2 2, empate 3, nada 4
+int resultTable(char table[N][N]){ // win player1 1, win player2 2, draw 3, nothing 4
   
 	int i,j;
 
@@ -130,7 +130,7 @@ int resultTable(char table[N][N]){ // gana player1 1, gana player2 2, empate 3, 
 				  table[i+2][j],
 				  table[i+3][j])){
 
-        		return table[i][j]; // por columns
+        		return table[i][j]; // by columns
       		}
 
       		if(checkLine(
@@ -139,12 +139,12 @@ int resultTable(char table[N][N]){ // gana player1 1, gana player2 2, empate 3, 
 				  table[j][i+2],
 				  table[j][i+3])){
 
-        		return table[j][i]; // por filas
+        		return table[j][i]; // by rows
       		}
     	}
   	}
 
-  	for( i=0;i<=N-4;i++){// por diagonal inclinado abajo
+  	for( i=0;i<=N-4;i++){// by diagonal tilted down
     	for( j=0;j<=N-4;j++){
     		if(checkLine(
 				table[i][j],
@@ -157,7 +157,7 @@ int resultTable(char table[N][N]){ // gana player1 1, gana player2 2, empate 3, 
     	}
   	}
 
-	for(i=3;i<N;i++){ // por diagonal inclinado arriba
+	for(i=3;i<N;i++){ // by diagonal tilted up
    		for( j=0;j<=N-4;j++){
       		if(checkLine(
 				  table[i][j],
@@ -197,11 +197,11 @@ void copyBoard(char board[N][N], char father_board[N][N]){
 
 }
 
-int numSonToColumn(char board[N][N], int numSon){//sirve para responder a
-  // ¿que column del father es el son numero numSon?
+int numSonToColumn(char board[N][N], int numSon){//to respond
+  // what father's column is son's number numSon?
   	int v[N];
   	lastTokenColumn(v, board);
-  	int count=-1;// lo mas importante entender pq
+  	int count=-1;// is important to undertant the why
   
   	for(int i=0;i<N;i++){
     	if(v[i]!=-1){// ex v=[-1,1(son num 0),-1,4(son num 1)]
@@ -213,11 +213,11 @@ int numSonToColumn(char board[N][N], int numSon){//sirve para responder a
     	}
   	}
 
-  return 0; // para no dar error
+  return 0; // to avoid error
 
 }
 
-void tokenRoll(char board[N][N], int numSon, int level){ // numSon va de 0
+void tokenRoll(char board[N][N], int numSon, int level){ // numSon starts with 0
   
   	int column = numSonToColumn(board,numSon);
   	putToken(board, column , level%2+1);
@@ -252,19 +252,19 @@ int main(void) {
 
 	printTableEsthetic(table,0);
 	int v[N];
-	int player=1; // player=2 , empieza humano
-               // juagador=1 empezar el ordenador
+	int player=1; // player=2 , starts human
+               // player=1 starts machine
 
-	int cara=0; // si cara=1, humano es cara 
+	int cara=0; // if heads=1, human is heads
 
 	char ch1,ch2;
-	printf("Quieres empezar primero? y/n :");
+	printf("Do you want to start first? y/n :");
 
 	do{
 	scanf("%c",&ch1);
 	}while(ch1 !='y' && ch1 !='n');
 
-	printf("Quieres ser cara? y/n :");
+	printf("Do you want to be heads? y/n :");
 
 	do{
 		scanf("%c",&ch2);
@@ -283,15 +283,15 @@ int main(void) {
 	while(resultTable(table)==4){
 		lastTokenColumn(v, table);
 		
-		if(player%2+1==1){ // si player es 1 toca al humano
+		if(player%2+1==1){ // if player is 1 starts the human
 			do{
-			printf("Escoger una column="); // toca al humano
+			printf("Escoger una column="); // starts human
 			scanf("%d",&column);
 			
 			if(column==-1)
 				break;
-			}while(v[column] ==-1 || !(0<=column && column<N) ); // mientras column este llena o 
-		// o column este fuera del intervalo. seguir iterando
+			}while(v[column] ==-1 || !(0<=column && column<N) ); // while column is full or 
+		// column is out of the interval. Continue iterating
 			if(column==-1)
 				break;
 				
