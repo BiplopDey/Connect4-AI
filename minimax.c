@@ -92,10 +92,10 @@ Nodo *creaNodo(Nodo *padre, int numHijo, int nivel){
 
 }
 
-Nodo *creaRaiz(char tabla[N][N]){
+Nodo *creaRaiz(char table[N][N]){
 
   Nodo *p=malloc(sizeof(Nodo));
-  capiarTablero(p->tablero,tabla);
+  capiarTablero(p->tablero,table);
   p->n_hijos=numHijos(p->tablero);
   p->hijos=malloc(p->n_hijos*sizeof(Nodo*));
   
@@ -133,24 +133,24 @@ int compruebaLineaHeur(int a1,int a2, int a3, int a4,int jugador,int raya){
 }
 
 
-int resultadoTablaHeur(char tabla[N][N], int jugador, int raya){// player 1 1, player 2 2, empate 3, nada 4
+int resultadoTableHeur(char table[N][N], int jugador, int raya){// player 1 1, player 2 2, empate 3, nada 4
   int i, j;
   int p=0; 
 
   for(j=0;j<N;j++)
     for(i=0;i<=N-4;i++){
-        p+=compruebaLineaHeur(// por columnas
-			tabla[i][j],
-			tabla[i+1][j],
-			tabla[i+2][j],
-			tabla[i+3][j],
+        p+=compruebaLineaHeur(// por columns
+			table[i][j],
+			table[i+1][j],
+			table[i+2][j],
+			table[i+3][j],
 			jugador,
 			raya);
         p+=compruebaLineaHeur(// por filas
-			tabla[j][i],
-			tabla[j][i+1],
-			tabla[j][i+2],
-			tabla[j][i+3],
+			table[j][i],
+			table[j][i+1],
+			table[j][i+2],
+			table[j][i+3],
 			jugador,
 			raya);
       }
@@ -158,20 +158,20 @@ int resultadoTablaHeur(char tabla[N][N], int jugador, int raya){// player 1 1, p
   	for( i=0;i<=N-4;i++)// por diagonal inclinado abajo
     	for( j=0;j<=N-4;j++)
         	p+=compruebaLineaHeur(
-				tabla[i][j],
-				tabla[i+1][j+1], 
-				tabla[i+2][j+2], 
-				tabla[i+3][j+3],
+				table[i][j],
+				table[i+1][j+1], 
+				table[i+2][j+2], 
+				table[i+3][j+3],
 				jugador,
 				raya);
 
   	for(i=3;i<N;i++) // por diagonal inclinado arriba
    		for( j=0;j<=N-4;j++)
        		p+=compruebaLineaHeur(
-				   tabla[i][j],
-				   tabla[i-1][j+1], 
-				   tabla[i-2][j+2], 
-				   tabla[i-3][j+3],
+				   table[i][j],
+				   table[i-1][j+1], 
+				   table[i-2][j+2], 
+				   table[i-3][j+3],
 				   jugador,
 				   raya);
 
@@ -179,34 +179,34 @@ int resultadoTablaHeur(char tabla[N][N], int jugador, int raya){// player 1 1, p
 
 }
 
-int funcionHeur(char tabla[N][N]){
+int funcionHeur(char table[N][N]){
   
 	if(K==2){
-    	if(resultadoTablaHeur(tabla,2,4)) 
+    	if(resultadoTableHeur(table,2,4)) 
 			return 100000;
-    	else if(resultadoTablaHeur(tabla,1,4)) 
-			return -100000*resultadoTablaHeur(tabla,1,4);
+    	else if(resultadoTableHeur(table,1,4)) 
+			return -100000*resultadoTableHeur(table,1,4);
   	}
   
-  	if(resultadoTablaHeur(tabla,1,4)) //si el humano hace 4 en raya
-  		return -100000*resultadoTablaHeur(tabla,1,4);
-  	else if(resultadoTablaHeur(tabla,2,4)) // si el ordenador hace 4 en raya
+  	if(resultadoTableHeur(table,1,4)) //si el humano hace 4 en raya
+  		return -100000*resultadoTableHeur(table,1,4);
+  	else if(resultadoTableHeur(table,2,4)) // si el ordenador hace 4 en raya
   		return 100000;
 
   	int p=0;
-    p+=resultadoTablaHeur(tabla,2,3)*10;
+    p+=resultadoTableHeur(table,2,3)*10;
     //penalizar si el humano tien 3 en raya
-    p+=resultadoTablaHeur(tabla,1,3)*(-10);
-    p+=resultadoTablaHeur(tabla,2,2)*2;
+    p+=resultadoTableHeur(table,1,3)*(-10);
+    p+=resultadoTableHeur(table,2,2)*2;
     //penalizar si el humano tien 2 en raya
-    p+=resultadoTablaHeur(tabla,1,2)*(-2);
+    p+=resultadoTableHeur(table,1,2)*(-2);
  
  	return p;
 
 }
 //fin funcion heur
 
-int tiradaRaiz(Nodo *p){// que columna tirar despues del minimax
+int tiradaRaiz(Nodo *p){// que column tirar despues del minimax
   
   	double m;
   	int j=0;
@@ -218,7 +218,7 @@ int tiradaRaiz(Nodo *p){// que columna tirar despues del minimax
       		j=i;
     	}
   	}
-  	// el hijo numero j que columna corresponde de p->tablero?
-  	return numHijoAColumna(p->tablero, j);
+  	// el hijo numero j que column corresponde de p->tablero?
+  	return numHijoAColumn(p->tablero, j);
 
 }

@@ -5,7 +5,7 @@
 #include "connect4.h"
 #include "minimax.h"
 
-void printTabla(char tabla[N][N], int nivel){
+void printTable(char table[N][N], int nivel){
     
 	int i, j;
 
@@ -14,7 +14,7 @@ void printTabla(char tabla[N][N], int nivel){
         	printf("    ");
 
         for(j=0; j<N; j++)
-            printf("%d ",tabla[i][j]);
+            printf("%d ",table[i][j]);
 
         printf("\n");
     }
@@ -22,7 +22,7 @@ void printTabla(char tabla[N][N], int nivel){
     printf("\n");
 }
 
-void printTablaEstet(char tabla[N][N], int cara){ // Cuestiones de estetica de matriz
+void printTableEstet(char table[N][N], int cara){ // Cuestiones de estetica de matriz
 	
 	int c1=2, c2=1;
 	int i,j;
@@ -40,9 +40,9 @@ void printTablaEstet(char tabla[N][N], int cara){ // Cuestiones de estetica de m
         printf("|");
 
         for(j=0; j<N; j++){
-          	if(tabla[i][j]==c1)
+          	if(table[i][j]==c1)
             	printf(" O |");
-          	else if(tabla[i][j]==c2)
+          	else if(table[i][j]==c2)
             	printf(" X |");
           	else
             	printf("   |");
@@ -64,32 +64,32 @@ void printTablaEstet(char tabla[N][N], int cara){ // Cuestiones de estetica de m
 
 }
 
-void ponerFicha(char tabla[N][N], int columna, int jugador){
+void ponerFicha(char table[N][N], int column, int jugador){
 
   	int i;
 
-  	if(!(0<=columna && columna<N)){
-    	printf("columna erronea\n");
+  	if(!(0<=column && column<N)){
+    	printf("column erronea\n");
     	return;
   	}
 
   	for(i=N-1;i>=0;i--)
-    	if(tabla[i][columna]==0){
-        	tabla[i][columna] = jugador;
+    	if(table[i][column]==0){
+        	table[i][column] = jugador;
           	return;
        }
 
 }
 
-void ultimoElementoColumna(int v[N], char tabla[N][N]){
+void ultimoElementoColumn(int v[N], char table[N][N]){
   
   	int i;
 
   	for(int j=0; j<N;j++){
-    	v[j]=-1;// columna j esta llena hasta que se demuestre lo contrario
+    	v[j]=-1;// column j esta llena hasta que se demuestre lo contrario
     	
 		for(i=N-1;i>=0;i--){
-      		if(tabla[i][j]==0){
+      		if(table[i][j]==0){
           		v[j] = i;
           		break;
       		} 
@@ -98,16 +98,16 @@ void ultimoElementoColumna(int v[N], char tabla[N][N]){
 
 }
 
-int tablaLlena( char tabla[N][N]){
+int tableLlena( char table[N][N]){
 
   	int v[N];
-  	ultimoElementoColumna(v, tabla);
+  	ultimoElementoColumn(v, table);
 	
   	for(int j=0;j<N;j++)
 		if(v[j]!=-1)
-      		return 0; // 0=es falso, la tabla no esta llena
+      		return 0; // 0=es falso, la table no esta llena
 
-  return 1; // cierto, tabla llena
+  return 1; // cierto, table llena
 
 }
 
@@ -118,28 +118,28 @@ int compruebaLinea(int a1,int a2, int a3, int a4){
 
 }
 
-int resultadoTabla(char tabla[N][N]){ // gana player1 1, gana player2 2, empate 3, nada 4
+int resultadoTable(char table[N][N]){ // gana player1 1, gana player2 2, empate 3, nada 4
   
 	int i,j;
 
   	for( j=0;j<N;j++){
     	for( i=0;i<=N-4;i++){
       		if(compruebaLinea(
-				  tabla[i][j],
-				  tabla[i+1][j],
-				  tabla[i+2][j],
-				  tabla[i+3][j])){
+				  table[i][j],
+				  table[i+1][j],
+				  table[i+2][j],
+				  table[i+3][j])){
 
-        		return tabla[i][j]; // por columnas
+        		return table[i][j]; // por columns
       		}
 
       		if(compruebaLinea(
-				  tabla[j][i],
-				  tabla[j][i+1],
-				  tabla[j][i+2],
-				  tabla[j][i+3])){
+				  table[j][i],
+				  table[j][i+1],
+				  table[j][i+2],
+				  table[j][i+3])){
 
-        		return tabla[j][i]; // por filas
+        		return table[j][i]; // por filas
       		}
     	}
   	}
@@ -147,12 +147,12 @@ int resultadoTabla(char tabla[N][N]){ // gana player1 1, gana player2 2, empate 
   	for( i=0;i<=N-4;i++){// por diagonal inclinado abajo
     	for( j=0;j<=N-4;j++){
     		if(compruebaLinea(
-				tabla[i][j],
-				tabla[i+1][j+1], 
-				tabla[i+2][j+2], 
-				tabla[i+3][j+3])){
+				table[i][j],
+				table[i+1][j+1], 
+				table[i+2][j+2], 
+				table[i+3][j+3])){
 
-    				return tabla[i][j];
+    				return table[i][j];
       		}
     	}
   	}
@@ -160,28 +160,28 @@ int resultadoTabla(char tabla[N][N]){ // gana player1 1, gana player2 2, empate 
 	for(i=3;i<N;i++){ // por diagonal inclinado arriba
    		for( j=0;j<=N-4;j++){
       		if(compruebaLinea(
-				  tabla[i][j],
-				  tabla[i-1][j+1], 
-				  tabla[i-2][j+2], 
-				  tabla[i-3][j+3])){
+				  table[i][j],
+				  table[i-1][j+1], 
+				  table[i-2][j+2], 
+				  table[i-3][j+3])){
 
-      			return tabla[i][j];
+      			return table[i][j];
      		}
     	}
   	}
  
-	if(tablaLlena(tabla))
+	if(tableLlena(table))
 		return 3;
   
   	return 4;
 
 }
 
-void inicializaTabla(char tabla[N][N]){
+void inicializaTable(char table[N][N]){
 
   	for (int i =0; i<N; i++)
     	for(int j=0; j<N; j++)
-      		tabla[i][j]=0;
+      		table[i][j]=0;
 
 }
 
@@ -197,10 +197,10 @@ void capiarTablero(char tablero[N][N],char padre_tablero[N][N]){
 
 }
 
-int numHijoAColumna(char tablero[N][N],int numHijo){//sirve para responder a
-  // ¿que columna del padre es el hijo numero numHijo?
+int numHijoAColumn(char tablero[N][N],int numHijo){//sirve para responder a
+  // ¿que column del padre es el hijo numero numHijo?
   	int v[N];
-  	ultimoElementoColumna(v, tablero);
+  	ultimoElementoColumn(v, tablero);
   	int count=-1;// lo mas importante entender pq
   
   	for(int i=0;i<N;i++){
@@ -219,15 +219,15 @@ int numHijoAColumna(char tablero[N][N],int numHijo){//sirve para responder a
 
 void aplicarTirada(char tablero[N][N], int numHijo, int nivel){ // numHijo va de 0
   
-  	int columna = numHijoAColumna(tablero,numHijo);
-  	ponerFicha(tablero, columna , nivel%2+1);
+  	int column = numHijoAColumn(tablero,numHijo);
+  	ponerFicha(tablero, column , nivel%2+1);
 
 }
 
 int numHijos(char tablero[N][N]){
 
   	int v[N];
-  	ultimoElementoColumna(v, tablero);
+  	ultimoElementoColumn(v, tablero);
   	int count=0;
 
   	for(int i=0;i<N;i++){
@@ -242,15 +242,15 @@ int numHijos(char tablero[N][N]){
 
 int main(void) {
 
-	int columna;
-	char tabla[N][N];
+	int column;
+	char table[N][N];
 
-	inicializaTabla(tabla);
+	inicializaTable(table);
 	Nodo *raiz;
 
 	int alfa=-Inf,beta=Inf;
 
-	printTablaEstet(tabla,0);
+	printTableEstet(table,0);
 	int v[N];
 	int jugador=1; // jugador=2 , empieza humano
                // juagador=1 empezar el ordenador
@@ -280,25 +280,25 @@ int main(void) {
 	else 
 		cara=0;
 
-	while(resultadoTabla(tabla)==4){
-		ultimoElementoColumna(v, tabla);
+	while(resultadoTable(table)==4){
+		ultimoElementoColumn(v, table);
 		
 		if(jugador%2+1==1){ // si jugador es 1 toca al humano
 			do{
-			printf("Escoger una columna="); // toca al humano
-			scanf("%d",&columna);
+			printf("Escoger una column="); // toca al humano
+			scanf("%d",&column);
 			
-			if(columna==-1)
+			if(column==-1)
 				break;
-			}while(v[columna] ==-1 || !(0<=columna && columna<N) ); // mientras columna este llena o 
-		// o columna este fuera del intervalo. seguir iterando
-			if(columna==-1)
+			}while(v[column] ==-1 || !(0<=column && column<N) ); // mientras column este llena o 
+		// o column este fuera del intervalo. seguir iterando
+			if(column==-1)
 				break;
 				
 		} else{
-			raiz=creaRaiz(tabla);
+			raiz=creaRaiz(table);
 			Max_Value(raiz,alfa,beta,0);
-			columna= tiradaRaiz(raiz);
+			column= tiradaRaiz(raiz);
 
 				for(int i=0;i< raiz->n_hijos;i++){
 					free(raiz->hijos[i]->hijos);
@@ -309,11 +309,11 @@ int main(void) {
 			free(raiz);
 	}
 
-	ponerFicha(tabla,columna,jugador%2+1);
-	printTablaEstet(tabla,cara);
+	ponerFicha(table,column,jugador%2+1);
+	printTableEstet(table,cara);
 	jugador++;
 
-	switch (resultadoTabla(tabla)) {
+	switch (resultadoTable(table)) {
 		case 1:
 			printf("4 en raya! Has ganado!\n");
 			break;
