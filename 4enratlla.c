@@ -22,7 +22,7 @@ void printTabla(char tabla[N][N], int nivel){
     printf("\n");
 }
 
-void printTablaEstet(char tabla[N][N], int cara){ //Cuestiones de estetica de matriz
+void printTablaEstet(char tabla[N][N], int cara){ // Cuestiones de estetica de matriz
 	
 	int c1=2, c2=1;
 	int i,j;
@@ -105,9 +105,9 @@ int tablaLlena( char tabla[N][N]){
 	
   	for(int j=0;j<N;j++)
 		if(v[j]!=-1)
-      		return 0;//0=es falso, la tabla no esta llena
+      		return 0; // 0=es falso, la tabla no esta llena
 
-  return 1;//cierto, tabla llena
+  return 1; // cierto, tabla llena
 
 }
 
@@ -118,7 +118,7 @@ int compruebaLinea(int a1,int a2, int a3, int a4){
 
 }
 
-int resultadoTabla(char tabla[N][N]){//gana player1 1, gana player2 2, empate 3, nada 4
+int resultadoTabla(char tabla[N][N]){ // gana player1 1, gana player2 2, empate 3, nada 4
   
 	int i,j;
 
@@ -130,7 +130,7 @@ int resultadoTabla(char tabla[N][N]){//gana player1 1, gana player2 2, empate 3,
 				  tabla[i+2][j],
 				  tabla[i+3][j])){
 
-        		return tabla[i][j];// por columnas
+        		return tabla[i][j]; // por columnas
       		}
 
       		if(compruebaLinea(
@@ -139,7 +139,7 @@ int resultadoTabla(char tabla[N][N]){//gana player1 1, gana player2 2, empate 3,
 				  tabla[j][i+2],
 				  tabla[j][i+3])){
 
-        		return tabla[j][i];//por filas
+        		return tabla[j][i]; // por filas
       		}
     	}
   	}
@@ -213,11 +213,11 @@ int numHijoAColumna(char tablero[N][N],int numHijo){//sirve para responder a
     	}
   	}
 
-  return 0;//para no dar error
+  return 0; // para no dar error
 
 }
 
-void aplicarTirada(char tablero[N][N], int numHijo, int nivel){//numHijo va de 0
+void aplicarTirada(char tablero[N][N], int numHijo, int nivel){ // numHijo va de 0
   
   	int columna = numHijoAColumna(tablero,numHijo);
   	ponerFicha(tablero, columna , nivel%2+1);
@@ -252,10 +252,10 @@ int main(void) {
 
 	printTablaEstet(tabla,0);
 	int v[N];
-	int jugador=1;//jugador=2 , empieza humano
-              //juagador=1 empezar el ordenador
+	int jugador=1; // jugador=2 , empieza humano
+               // juagador=1 empezar el ordenador
 
-	int cara=0;//si cara=1, humano es cara 
+	int cara=0; // si cara=1, humano es cara 
 
 	char ch1,ch2;
 	printf("Quieres empezar primero? y/n :");
@@ -283,14 +283,14 @@ int main(void) {
 	while(resultadoTabla(tabla)==4){
 		ultimoElementoColumna(v, tabla);
 		
-		if(jugador%2+1==1){//si jugador es 1 toca al humano
+		if(jugador%2+1==1){ // si jugador es 1 toca al humano
 			do{
-			printf("Escoger una columna=");//toca al humano
+			printf("Escoger una columna="); // toca al humano
 			scanf("%d",&columna);
 			
 			if(columna==-1)
 				break;
-			}while(v[columna] ==-1 || !(0<=columna && columna<N) );// mientras columna este llena o 
+			}while(v[columna] ==-1 || !(0<=columna && columna<N) ); // mientras columna este llena o 
 		// o columna este fuera del intervalo. seguir iterando
 			if(columna==-1)
 				break;

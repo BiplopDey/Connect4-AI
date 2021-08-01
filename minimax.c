@@ -29,7 +29,7 @@ double Max_Value(Nodo *p,double alfa, double beta,int nivel){
     	if(v1>alfa)  
 			alfa=v1;
 
-    	if(nivel!=0){// no matar a los hijos de la raiz, pq se necesita luego
+    	if(nivel!=0){// no matar a los hijos de la raiz, porque se necesita luego
       		free(p->hijos[i]->hijos);
       		free(p->hijos[i]);
     	}
@@ -204,7 +204,6 @@ int funcionHeur(char tabla[N][N]){
  	return p;
 
 }
-
 //fin funcion heur
 
 int tiradaRaiz(Nodo *p){// que columna tirar despues del minimax
