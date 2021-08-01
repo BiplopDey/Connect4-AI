@@ -113,9 +113,9 @@ void showValue(Node *p,int level) {
 }
 
 //inicion funcion heur
-int checkLineHeur(int a1,int a2, int a3, int a4,int player,int raya){
+int checkLineHeur(int a1, int a2, int a3, int a4, int player, int lengthConnect){
     
-	switch (raya) {
+	switch (lengthConnect) {
     	case 2: // escribir mas cosas para penalizar 2 en raya y un vacio al lado
             return (a1==player && a2==player && a3==0) 
 				+ (a2==player && a3==player && a4==0)
@@ -133,7 +133,7 @@ int checkLineHeur(int a1,int a2, int a3, int a4,int player,int raya){
 }
 
 
-int resultTableHeur(char table[N][N], int player, int raya){// player 1 1, player 2 2, empate 3, nada 4
+int resultTableHeur(char table[N][N], int player, int lengthConnect){// player 1 1, player 2 2, empate 3, nada 4
   int i, j;
   int p=0; 
 
@@ -145,14 +145,14 @@ int resultTableHeur(char table[N][N], int player, int raya){// player 1 1, playe
 			table[i+2][j],
 			table[i+3][j],
 			player,
-			raya);
+			lengthConnect);
         p+=checkLineHeur(// por filas
 			table[j][i],
 			table[j][i+1],
 			table[j][i+2],
 			table[j][i+3],
 			player,
-			raya);
+			lengthConnect);
       }
 
   	for( i=0;i<=N-4;i++)// por diagonal inclinado abajo
@@ -163,7 +163,7 @@ int resultTableHeur(char table[N][N], int player, int raya){// player 1 1, playe
 				table[i+2][j+2], 
 				table[i+3][j+3],
 				player,
-				raya);
+				lengthConnect);
 
   	for(i=3;i<N;i++) // por diagonal inclinado arriba
    		for( j=0;j<=N-4;j++)
@@ -173,7 +173,7 @@ int resultTableHeur(char table[N][N], int player, int raya){// player 1 1, playe
 				   table[i-2][j+2], 
 				   table[i-3][j+3],
 				   player,
-				   raya);
+				   lengthConnect);
 
  	return p;
 
