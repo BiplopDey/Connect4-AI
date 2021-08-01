@@ -6,7 +6,7 @@
 
 typedef struct Node{
 
-  	char tablero[N][N];
+  	char board[N][N];
   	struct Node **sons;
   	int n_sons;
   	double valor;
@@ -15,14 +15,14 @@ typedef struct Node{
 
 void printTable(char table[N][N], int level);
 void printTableEstet(char table[N][N], int k);
-void ponerFicha(char table[N][N], int column, int jugador);
+void ponerFicha(char table[N][N], int column, int player);
 void ultimoElementoColumn(int v[N], char table[N][N]);
 int tableLlena(char table[N][N]);
 int compruebaLinea(int a1,int a2, int a3, int a4);
 int resultadoTable(char table[N][N]);
 void inicializaTable(char table[N][N]);
 
-void capiarTablero(char tablero[N][N], char padre_tablero[N][N]);
-int numSonAColumn(char tablero[N][N], int numSon);
-void aplicarTirada(char tablero[N][N], int numSon, int level);
-int numSons(char tablero[N][N]);
+void capiarBoard(char board[N][N], char father_board[N][N]);
+int numSonAColumn(char board[N][N], int numSon);
+void aplicarTirada(char board[N][N], int numSon, int level);
+int numSons(char board[N][N]);

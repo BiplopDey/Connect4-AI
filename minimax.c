@@ -7,7 +7,7 @@
 
 double Max_Value(Node *p,double alfa, double beta,int level){
 	if(p->n_sons==0) 
-  		return(funcionHeur(p->tablero));
+  		return(funcionHeur(p->board));
   			p->valor=-Inf;
 
   	double v1;
@@ -42,7 +42,7 @@ double Max_Value(Node *p,double alfa, double beta,int level){
 double Min_Value(Node *p,double alfa, double beta,int level){
 
 	if(p->n_sons==0) 
-		return(funcionHeur(p->tablero));
+		return(funcionHeur(p->board));
 
   	p->valor=+Inf;
   	double v1;
@@ -73,14 +73,14 @@ double Min_Value(Node *p,double alfa, double beta,int level){
 
 }
 
-Node *creaNode(Node *padre, int numSon, int level){
+Node *creaNode(Node *father, int numSon, int level){
 
   Node *p=malloc(sizeof(Node));
-  capiarTablero(p->tablero,padre->tablero);
-  aplicarTirada(p->tablero,numSon,level);//numSon es el numero del son, que va de 0 a ...
+  capiarBoard(p->board,father->board);
+  aplicarTirada(p->board,numSon,level);//numSon es el numero del son, que va de 0 a ...
 
   if(level<K){
-    p->n_sons=numSons(p->tablero);
+    p->n_sons=numSons(p->board);
     p->sons=malloc(p->n_sons*sizeof(Node*));
   }
   else{
@@ -95,8 +95,8 @@ Node *creaNode(Node *padre, int numSon, int level){
 Node *creaRaiz(char table[N][N]){
 
   Node *p=malloc(sizeof(Node));
-  capiarTablero(p->tablero,table);
-  p->n_sons=numSons(p->tablero);
+  capiarBoard(p->board,table);
+  p->n_sons=numSons(p->board);
   p->sons=malloc(p->n_sons*sizeof(Node*));
   
   return p;
@@ -113,19 +113,19 @@ void mostraValor(Node *p,int level) {
 }
 
 //inicion funcion heur
-int compruebaLineaHeur(int a1,int a2, int a3, int a4,int jugador,int raya){
+int compruebaLineaHeur(int a1,int a2, int a3, int a4,int player,int raya){
     
 	switch (raya) {
     	case 2: // escribir mas cosas para penalizar 2 en raya y un vacio al lado
-            return (a1==jugador && a2==jugador && a3==0) 
-				+ (a2==jugador && a3==jugador && a4==0)
-				+ (a1==0 && a2==jugador && a3==jugador) 
-				+ (a2==0 && a3==jugador && a4==jugador);
+            return (a1==player && a2==player && a3==0) 
+				+ (a2==player && a3==player && a4==0)
+				+ (a1==0 && a2==player && a3==player) 
+				+ (a2==0 && a3==player && a4==player);
         case 3:
-            return (a1==jugador && a2==jugador && a3==jugador && a4==0) 
-				+ (a1==0 && a2==jugador && a3==jugador && a4==jugador);
+            return (a1==player && a2==player && a3==player && a4==0) 
+				+ (a1==0 && a2==player && a3==player && a4==player);
         case 4:
-            return (a1==jugador && a2==jugador && a3==jugador && a4==jugador);
+            return (a1==player && a2==player && a3==player && a4==player);
         }
 
     return 0;//pos si a caso
@@ -133,7 +133,7 @@ int compruebaLineaHeur(int a1,int a2, int a3, int a4,int jugador,int raya){
 }
 
 
-int resultadoTableHeur(char table[N][N], int jugador, int raya){// player 1 1, player 2 2, empate 3, nada 4
+int resultadoTableHeur(char table[N][N], int player, int raya){// player 1 1, player 2 2, empate 3, nada 4
   int i, j;
   int p=0; 
 
@@ -144,14 +144,14 @@ int resultadoTableHeur(char table[N][N], int jugador, int raya){// player 1 1, p
 			table[i+1][j],
 			table[i+2][j],
 			table[i+3][j],
-			jugador,
+			player,
 			raya);
         p+=compruebaLineaHeur(// por filas
 			table[j][i],
 			table[j][i+1],
 			table[j][i+2],
 			table[j][i+3],
-			jugador,
+			player,
 			raya);
       }
 
@@ -162,7 +162,7 @@ int resultadoTableHeur(char table[N][N], int jugador, int raya){// player 1 1, p
 				table[i+1][j+1], 
 				table[i+2][j+2], 
 				table[i+3][j+3],
-				jugador,
+				player,
 				raya);
 
   	for(i=3;i<N;i++) // por diagonal inclinado arriba
@@ -172,7 +172,7 @@ int resultadoTableHeur(char table[N][N], int jugador, int raya){// player 1 1, p
 				   table[i-1][j+1], 
 				   table[i-2][j+2], 
 				   table[i-3][j+3],
-				   jugador,
+				   player,
 				   raya);
 
  	return p;
@@ -218,7 +218,7 @@ int tiradaRaiz(Node *p){// que column tirar despues del minimax
       		j=i;
     	}
   	}
-  	// el son numero j que column corresponde de p->tablero?
-  	return numSonAColumn(p->tablero, j);
+  	// el son numero j que column corresponde de p->board?
+  	return numSonAColumn(p->board, j);
 
 }

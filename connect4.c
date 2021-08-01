@@ -64,7 +64,7 @@ void printTableEstet(char table[N][N], int cara){ // Cuestiones de estetica de m
 
 }
 
-void ponerFicha(char table[N][N], int column, int jugador){
+void ponerFicha(char table[N][N], int column, int player){
 
   	int i;
 
@@ -75,7 +75,7 @@ void ponerFicha(char table[N][N], int column, int jugador){
 
   	for(i=N-1;i>=0;i--)
     	if(table[i][column]==0){
-        	table[i][column] = jugador;
+        	table[i][column] = player;
           	return;
        }
 
@@ -185,22 +185,22 @@ void inicializaTable(char table[N][N]){
 
 }
 
-void capiarTablero(char tablero[N][N],char padre_tablero[N][N]){
+void capiarBoard(char board[N][N], char father_board[N][N]){
   
   	int i,j;
   
   	for (i =0; i<N; i++){
     	for(j=0; j<N; j++){
-      		tablero[i][j]=padre_tablero[i][j];
+      		board[i][j]=father_board[i][j];
     	}
   	}
 
 }
 
-int numSonAColumn(char tablero[N][N],int numSon){//sirve para responder a
-  // ¿que column del padre es el son numero numSon?
+int numSonAColumn(char board[N][N], int numSon){//sirve para responder a
+  // ¿que column del father es el son numero numSon?
   	int v[N];
-  	ultimoElementoColumn(v, tablero);
+  	ultimoElementoColumn(v, board);
   	int count=-1;// lo mas importante entender pq
   
   	for(int i=0;i<N;i++){
@@ -217,17 +217,17 @@ int numSonAColumn(char tablero[N][N],int numSon){//sirve para responder a
 
 }
 
-void aplicarTirada(char tablero[N][N], int numSon, int level){ // numSon va de 0
+void aplicarTirada(char board[N][N], int numSon, int level){ // numSon va de 0
   
-  	int column = numSonAColumn(tablero,numSon);
-  	ponerFicha(tablero, column , level%2+1);
+  	int column = numSonAColumn(board,numSon);
+  	ponerFicha(board, column , level%2+1);
 
 }
 
-int numSons(char tablero[N][N]){
+int numSons(char board[N][N]){
 
   	int v[N];
-  	ultimoElementoColumn(v, tablero);
+  	ultimoElementoColumn(v, board);
   	int count=0;
 
   	for(int i=0;i<N;i++){
@@ -252,7 +252,7 @@ int main(void) {
 
 	printTableEstet(table,0);
 	int v[N];
-	int jugador=1; // jugador=2 , empieza humano
+	int player=1; // player=2 , empieza humano
                // juagador=1 empezar el ordenador
 
 	int cara=0; // si cara=1, humano es cara 
@@ -271,9 +271,9 @@ int main(void) {
 	}while(ch2 !='y' && ch2 !='n');
 
 	if(ch1=='y') 
-		jugador=2;
+		player=2;
 	else 
-		jugador=1;
+		player=1;
 
 	if(ch2=='y') 
 		cara=1;
@@ -283,7 +283,7 @@ int main(void) {
 	while(resultadoTable(table)==4){
 		ultimoElementoColumn(v, table);
 		
-		if(jugador%2+1==1){ // si jugador es 1 toca al humano
+		if(player%2+1==1){ // si player es 1 toca al humano
 			do{
 			printf("Escoger una column="); // toca al humano
 			scanf("%d",&column);
@@ -309,9 +309,9 @@ int main(void) {
 			free(raiz);
 	}
 
-	ponerFicha(table,column,jugador%2+1);
+	ponerFicha(table,column,player%2+1);
 	printTableEstet(table,cara);
-	jugador++;
+	player++;
 
 	switch (resultadoTable(table)) {
 		case 1:
