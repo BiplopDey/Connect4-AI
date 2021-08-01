@@ -9,7 +9,7 @@ typedef struct Node{
   	char board[N][N];
   	struct Node **sons;
   	int n_sons;
-  	double valor;
+  	double value;
 
 } Node;
 
@@ -22,7 +22,7 @@ int compruebaLinea(int a1,int a2, int a3, int a4);
 int resultadoTable(char table[N][N]);
 void inicializaTable(char table[N][N]);
 
-void capiarBoard(char board[N][N], char father_board[N][N]);
+void copyBoard(char board[N][N], char father_board[N][N]);
 int numSonAColumn(char board[N][N], int numSon);
 void aplicarTirada(char board[N][N], int numSon, int level);
 int numSons(char board[N][N]);

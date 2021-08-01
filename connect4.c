@@ -185,7 +185,7 @@ void inicializaTable(char table[N][N]){
 
 }
 
-void capiarBoard(char board[N][N], char father_board[N][N]){
+void copyBoard(char board[N][N], char father_board[N][N]){
   
   	int i,j;
   
@@ -246,7 +246,7 @@ int main(void) {
 	char table[N][N];
 
 	inicializaTable(table);
-	Node *raiz;
+	Node *root;
 
 	int alfa=-Inf,beta=Inf;
 
@@ -296,17 +296,17 @@ int main(void) {
 				break;
 				
 		} else{
-			raiz=creaRaiz(table);
-			Max_Value(raiz,alfa,beta,0);
-			column= tiradaRaiz(raiz);
+			root=creaRoot(table);
+			Max_Value(root,alfa,beta,0);
+			column= tiradaRoot(root);
 
-				for(int i=0;i< raiz->n_sons;i++){
-					free(raiz->sons[i]->sons);
-					free(raiz->sons[i]);
+				for(int i=0;i< root->n_sons;i++){
+					free(root->sons[i]->sons);
+					free(root->sons[i]);
 				}
 				
-			free(raiz->sons);
-			free(raiz);
+			free(root->sons);
+			free(root);
 	}
 
 	ponerFicha(table,column,player%2+1);

@@ -8,7 +8,7 @@
 double Max_Value(Node *p,double alfa, double beta,int level){
 	if(p->n_sons==0) 
   		return(funcionHeur(p->board));
-  			p->valor=-Inf;
+  			p->value=-Inf;
 
   	double v1;
 	for(int i=0;i<p->n_sons;i++){
@@ -16,11 +16,11 @@ double Max_Value(Node *p,double alfa, double beta,int level){
 		p->sons[i]=creaNode(p,i,level+1);
     	v1=Min_Value(p->sons[i],alfa,beta,level+1);
 
-    	if(v1>p->valor) 
-			p->valor=v1;
+    	if(v1>p->value) 
+			p->value=v1;
 
     	if(v1>=beta){
-      		double v=p->valor;
+      		double v=p->value;
       		free(p->sons[i]->sons);
       		free(p->sons[i]);
       		return v;
@@ -29,13 +29,13 @@ double Max_Value(Node *p,double alfa, double beta,int level){
     	if(v1>alfa)  
 			alfa=v1;
 
-    	if(level!=0){// no matar a los sons de la raiz, porque se necesita luego
+    	if(level!=0){// no matar a los sons de la root, porque se necesita luego
       		free(p->sons[i]->sons);
       		free(p->sons[i]);
     	}
   	}
 
-  	return p->valor;    
+  	return p->value;    
 
 }
 
@@ -44,18 +44,18 @@ double Min_Value(Node *p,double alfa, double beta,int level){
 	if(p->n_sons==0) 
 		return(funcionHeur(p->board));
 
-  	p->valor=+Inf;
+  	p->value=+Inf;
   	double v1;
 	
   	for(int i=0;i<p->n_sons;i++){
     	p->sons[i]=creaNode(p,i,level+1);
     	v1=Max_Value(p->sons[i],alfa,beta,level+1);
     	
-		if(v1< p->valor) 
-			p->valor=v1;
+		if(v1< p->value) 
+			p->value=v1;
     	
 		if(v1<= alfa){
-      		double v=p->valor;
+      		double v=p->value;
       		free(p->sons[i]->sons);
       		free(p->sons[i]);
       		return v;
@@ -69,14 +69,14 @@ double Min_Value(Node *p,double alfa, double beta,int level){
 
   }
 
-  return p->valor;
+  return p->value;
 
 }
 
 Node *creaNode(Node *father, int numSon, int level){
 
   Node *p=malloc(sizeof(Node));
-  capiarBoard(p->board,father->board);
+  copyBoard(p->board,father->board);
   aplicarTirada(p->board,numSon,level);//numSon es el numero del son, que va de 0 a ...
 
   if(level<K){
@@ -92,10 +92,10 @@ Node *creaNode(Node *father, int numSon, int level){
 
 }
 
-Node *creaRaiz(char table[N][N]){
+Node *creaRoot(char table[N][N]){
 
   Node *p=malloc(sizeof(Node));
-  capiarBoard(p->board,table);
+  copyBoard(p->board,table);
   p->n_sons=numSons(p->board);
   p->sons=malloc(p->n_sons*sizeof(Node*));
   
@@ -103,12 +103,12 @@ Node *creaRaiz(char table[N][N]){
 
 }
 
-void mostraValor(Node *p,int level) {
+void mostraValue(Node *p,int level) {
 
     for(int i=0;i<level;i++)
         printf("\t");
 
-   printf("%f\n",p->valor);
+   printf("%f\n",p->value);
 
 }
 
@@ -206,15 +206,15 @@ int funcionHeur(char table[N][N]){
 }
 //fin funcion heur
 
-int tiradaRaiz(Node *p){// que column tirar despues del minimax
+int tiradaRoot(Node *p){// que column tirar despues del minimax
   
   	double m;
   	int j=0;
-  	m=p->sons[0]->valor;
+  	m=p->sons[0]->value;
 
   	for(int i=1;i<p->n_sons;i++){
-		if(p->sons[i]->valor>m){
-      		m=p->sons[i]->valor;
+		if(p->sons[i]->value>m){
+      		m=p->sons[i]->value;
       		j=i;
     	}
   	}
