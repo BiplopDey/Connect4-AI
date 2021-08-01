@@ -5,7 +5,7 @@
 #include "minimax.h"
 
 
-double Max_Value(Nodo *p,double alfa, double beta,int level){
+double Max_Value(Node *p,double alfa, double beta,int level){
 	if(p->n_sons==0) 
   		return(funcionHeur(p->tablero));
   			p->valor=-Inf;
@@ -13,7 +13,7 @@ double Max_Value(Nodo *p,double alfa, double beta,int level){
   	double v1;
 	for(int i=0;i<p->n_sons;i++){
 
-		p->sons[i]=creaNodo(p,i,level+1);
+		p->sons[i]=creaNode(p,i,level+1);
     	v1=Min_Value(p->sons[i],alfa,beta,level+1);
 
     	if(v1>p->valor) 
@@ -39,7 +39,7 @@ double Max_Value(Nodo *p,double alfa, double beta,int level){
 
 }
 
-double Min_Value(Nodo *p,double alfa, double beta,int level){
+double Min_Value(Node *p,double alfa, double beta,int level){
 
 	if(p->n_sons==0) 
 		return(funcionHeur(p->tablero));
@@ -48,7 +48,7 @@ double Min_Value(Nodo *p,double alfa, double beta,int level){
   	double v1;
 	
   	for(int i=0;i<p->n_sons;i++){
-    	p->sons[i]=creaNodo(p,i,level+1);
+    	p->sons[i]=creaNode(p,i,level+1);
     	v1=Max_Value(p->sons[i],alfa,beta,level+1);
     	
 		if(v1< p->valor) 
@@ -73,15 +73,15 @@ double Min_Value(Nodo *p,double alfa, double beta,int level){
 
 }
 
-Nodo *creaNodo(Nodo *padre, int numSon, int level){
+Node *creaNode(Node *padre, int numSon, int level){
 
-  Nodo *p=malloc(sizeof(Nodo));
+  Node *p=malloc(sizeof(Node));
   capiarTablero(p->tablero,padre->tablero);
   aplicarTirada(p->tablero,numSon,level);//numSon es el numero del son, que va de 0 a ...
 
   if(level<K){
     p->n_sons=numSons(p->tablero);
-    p->sons=malloc(p->n_sons*sizeof(Nodo*));
+    p->sons=malloc(p->n_sons*sizeof(Node*));
   }
   else{
     p->n_sons=0;
@@ -92,18 +92,18 @@ Nodo *creaNodo(Nodo *padre, int numSon, int level){
 
 }
 
-Nodo *creaRaiz(char table[N][N]){
+Node *creaRaiz(char table[N][N]){
 
-  Nodo *p=malloc(sizeof(Nodo));
+  Node *p=malloc(sizeof(Node));
   capiarTablero(p->tablero,table);
   p->n_sons=numSons(p->tablero);
-  p->sons=malloc(p->n_sons*sizeof(Nodo*));
+  p->sons=malloc(p->n_sons*sizeof(Node*));
   
   return p;
 
 }
 
-void mostraValor(Nodo *p,int level) {
+void mostraValor(Node *p,int level) {
 
     for(int i=0;i<level;i++)
         printf("\t");
@@ -206,7 +206,7 @@ int funcionHeur(char table[N][N]){
 }
 //fin funcion heur
 
-int tiradaRaiz(Nodo *p){// que column tirar despues del minimax
+int tiradaRaiz(Node *p){// que column tirar despues del minimax
   
   	double m;
   	int j=0;

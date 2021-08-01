@@ -4,14 +4,14 @@
 
 #define Inf 10000000
 
-typedef struct Nodo{
+typedef struct Node{
 
   	char tablero[N][N];
-  	struct Nodo **sons;
+  	struct Node **sons;
   	int n_sons;
   	double valor;
 
-} Nodo;
+} Node;
 
 void printTable(char table[N][N], int level);
 void printTableEstet(char table[N][N], int k);

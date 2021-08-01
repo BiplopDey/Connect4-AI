@@ -246,7 +246,7 @@ int main(void) {
 	char table[N][N];
 
 	inicializaTable(table);
-	Nodo *raiz;
+	Node *raiz;
 
 	int alfa=-Inf,beta=Inf;
 
