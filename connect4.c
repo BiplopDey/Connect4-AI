@@ -22,7 +22,7 @@ void printTable(char table[N][N], int level){
     printf("\n");
 }
 
-void printTableEsthetic(char table[N][N], int cara){ // Cuestiones de estetica de matriz
+void printTableEsthetic(char table[N][N], int cara){
 	
 	int c1=2, c2=1;
 	int i,j;
@@ -285,7 +285,7 @@ int main(void) {
 		
 		if(player%2+1==1){ // if player is 1 starts the human
 			do{
-			printf("Escoger una column="); // starts human
+			printf("Pick a column="); // starts human
 			scanf("%d",&column);
 			
 			if(column==-1)
@@ -315,16 +315,16 @@ int main(void) {
 
 	switch (resultTable(table)) {
 		case 1:
-			printf("4 en raya! Has ganado!\n");
+			printf("Connect 4! You have won!\n");
 			break;
 		case 2:
-			printf("4 en raya! Has perdido\n");
+			printf("Connect 4! You have lost.\n");
 			break;
 		case 4:
-			printf("Sigue la partida\n");
+			printf("Continue playing.\n");
 			break;
 		case 3:
-			printf("Empate\n");
+			printf("Draw!\n");
 			break;
 		}
 	}
