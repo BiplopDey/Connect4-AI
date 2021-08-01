@@ -113,7 +113,7 @@ void showValue(Node *p,int level) {
 }
 
 //inicion funcion heur
-int compruebaLineaHeur(int a1,int a2, int a3, int a4,int player,int raya){
+int checkLineHeur(int a1,int a2, int a3, int a4,int player,int raya){
     
 	switch (raya) {
     	case 2: // escribir mas cosas para penalizar 2 en raya y un vacio al lado
@@ -139,14 +139,14 @@ int resultadoTableHeur(char table[N][N], int player, int raya){// player 1 1, pl
 
   for(j=0;j<N;j++)
     for(i=0;i<=N-4;i++){
-        p+=compruebaLineaHeur(// por columns
+        p+=checkLineHeur(// por columns
 			table[i][j],
 			table[i+1][j],
 			table[i+2][j],
 			table[i+3][j],
 			player,
 			raya);
-        p+=compruebaLineaHeur(// por filas
+        p+=checkLineHeur(// por filas
 			table[j][i],
 			table[j][i+1],
 			table[j][i+2],
@@ -157,7 +157,7 @@ int resultadoTableHeur(char table[N][N], int player, int raya){// player 1 1, pl
 
   	for( i=0;i<=N-4;i++)// por diagonal inclinado abajo
     	for( j=0;j<=N-4;j++)
-        	p+=compruebaLineaHeur(
+        	p+=checkLineHeur(
 				table[i][j],
 				table[i+1][j+1], 
 				table[i+2][j+2], 
@@ -167,7 +167,7 @@ int resultadoTableHeur(char table[N][N], int player, int raya){// player 1 1, pl
 
   	for(i=3;i<N;i++) // por diagonal inclinado arriba
    		for( j=0;j<=N-4;j++)
-       		p+=compruebaLineaHeur(
+       		p+=checkLineHeur(
 				   table[i][j],
 				   table[i-1][j+1], 
 				   table[i-2][j+2], 
@@ -219,6 +219,6 @@ int tiradaRoot(Node *p){// que column tirar despues del minimax
     	}
   	}
   	// el son numero j que column corresponde de p->board?
-  	return numSonAColumn(p->board, j);
+  	return numSonToColumn(p->board, j);
 
 }

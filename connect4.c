@@ -111,7 +111,7 @@ int tableFull( char table[N][N]){
 
 }
 
-int compruebaLinea(int a1,int a2, int a3, int a4){
+int checkLine(int a1,int a2, int a3, int a4){
 
   return ((a1==1 && a2==1 && a3==1 && a4==1) 
   		|| (a1==2 && a2==2 && a3==2 && a4==2));
@@ -124,7 +124,7 @@ int resultadoTable(char table[N][N]){ // gana player1 1, gana player2 2, empate 
 
   	for( j=0;j<N;j++){
     	for( i=0;i<=N-4;i++){
-      		if(compruebaLinea(
+      		if(checkLine(
 				  table[i][j],
 				  table[i+1][j],
 				  table[i+2][j],
@@ -133,7 +133,7 @@ int resultadoTable(char table[N][N]){ // gana player1 1, gana player2 2, empate 
         		return table[i][j]; // por columns
       		}
 
-      		if(compruebaLinea(
+      		if(checkLine(
 				  table[j][i],
 				  table[j][i+1],
 				  table[j][i+2],
@@ -146,7 +146,7 @@ int resultadoTable(char table[N][N]){ // gana player1 1, gana player2 2, empate 
 
   	for( i=0;i<=N-4;i++){// por diagonal inclinado abajo
     	for( j=0;j<=N-4;j++){
-    		if(compruebaLinea(
+    		if(checkLine(
 				table[i][j],
 				table[i+1][j+1], 
 				table[i+2][j+2], 
@@ -159,7 +159,7 @@ int resultadoTable(char table[N][N]){ // gana player1 1, gana player2 2, empate 
 
 	for(i=3;i<N;i++){ // por diagonal inclinado arriba
    		for( j=0;j<=N-4;j++){
-      		if(compruebaLinea(
+      		if(checkLine(
 				  table[i][j],
 				  table[i-1][j+1], 
 				  table[i-2][j+2], 
@@ -177,7 +177,7 @@ int resultadoTable(char table[N][N]){ // gana player1 1, gana player2 2, empate 
 
 }
 
-void inicializaTable(char table[N][N]){
+void initializeTable(char table[N][N]){
 
   	for (int i =0; i<N; i++)
     	for(int j=0; j<N; j++)
@@ -197,7 +197,7 @@ void copyBoard(char board[N][N], char father_board[N][N]){
 
 }
 
-int numSonAColumn(char board[N][N], int numSon){//sirve para responder a
+int numSonToColumn(char board[N][N], int numSon){//sirve para responder a
   // ¿que column del father es el son numero numSon?
   	int v[N];
   	ultimoElementoColumn(v, board);
@@ -219,7 +219,7 @@ int numSonAColumn(char board[N][N], int numSon){//sirve para responder a
 
 void aplicarTirada(char board[N][N], int numSon, int level){ // numSon va de 0
   
-  	int column = numSonAColumn(board,numSon);
+  	int column = numSonToColumn(board,numSon);
   	ponerFicha(board, column , level%2+1);
 
 }
@@ -245,7 +245,7 @@ int main(void) {
 	int column;
 	char table[N][N];
 
-	inicializaTable(table);
+	initializeTable(table);
 	Node *root;
 
 	int alfa=-Inf,beta=Inf;

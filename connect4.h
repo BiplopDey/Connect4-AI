@@ -18,11 +18,11 @@ void printTableEstet(char table[N][N], int k);
 void ponerFicha(char table[N][N], int column, int player);
 void ultimoElementoColumn(int v[N], char table[N][N]);
 int tableFull(char table[N][N]);
-int compruebaLinea(int a1,int a2, int a3, int a4);
+int checkLine(int a1, int a2, int a3, int a4);
 int resultadoTable(char table[N][N]);
-void inicializaTable(char table[N][N]);
+void initializeTable(char table[N][N]);
 
 void copyBoard(char board[N][N], char father_board[N][N]);
-int numSonAColumn(char board[N][N], int numSon);
+int numSonToColumn(char board[N][N], int numSon);
 void aplicarTirada(char board[N][N], int numSon, int level);
 int numSons(char board[N][N]);
