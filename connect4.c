@@ -5,12 +5,12 @@
 #include "connect4.h"
 #include "minimax.h"
 
-void printTable(char table[N][N], int nivel){
+void printTable(char table[N][N], int level){
     
 	int i, j;
 
     for (i=0; i<N; i++){
-    	for( int k=0;k<nivel;k++)
+    	for( int k=0;k<level;k++)
         	printf("    ");
 
         for(j=0; j<N; j++)
@@ -217,10 +217,10 @@ int numHijoAColumn(char tablero[N][N],int numHijo){//sirve para responder a
 
 }
 
-void aplicarTirada(char tablero[N][N], int numHijo, int nivel){ // numHijo va de 0
+void aplicarTirada(char tablero[N][N], int numHijo, int level){ // numHijo va de 0
   
   	int column = numHijoAColumn(tablero,numHijo);
-  	ponerFicha(tablero, column , nivel%2+1);
+  	ponerFicha(tablero, column , level%2+1);
 
 }
 

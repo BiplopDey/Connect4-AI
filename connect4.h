@@ -1,6 +1,6 @@
 
 #define N 7
-#define K 6 // K=nivel, profundidad arbol
+#define K 6 // K=level, profundidad arbol
 
 #define Inf 10000000
 
@@ -13,7 +13,7 @@ typedef struct Nodo{
 
 } Nodo;
 
-void printTable(char table[N][N], int nivel);
+void printTable(char table[N][N], int level);
 void printTableEstet(char table[N][N], int k);
 void ponerFicha(char table[N][N], int column, int jugador);
 void ultimoElementoColumn(int v[N], char table[N][N]);
@@ -24,5 +24,5 @@ void inicializaTable(char table[N][N]);
 
 void capiarTablero(char tablero[N][N], char padre_tablero[N][N]);
 int numHijoAColumn(char tablero[N][N], int numHijo);
-void aplicarTirada(char tablero[N][N], int numHijo, int nivel);
+void aplicarTirada(char tablero[N][N], int numHijo, int level);
 int numHijos(char tablero[N][N]);
