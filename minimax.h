@@ -1,6 +1,6 @@
-Node *creaNode(Node *father, int numSon, int level);
-Node *creaRoot(char table[N][N]);
-void mostraValue(Node *p, int level);
+Node *createNode(Node *father, int numSon, int level);
+Node *createRoot(char table[N][N]);
+void showValue(Node *p, int level);
 
 double Min_Value(Node *p, double alfa, double beta, int level);
 double Max_Value(Node *p, double alfa, double beta, int level);

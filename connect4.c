@@ -98,7 +98,7 @@ void ultimoElementoColumn(int v[N], char table[N][N]){
 
 }
 
-int tableLlena( char table[N][N]){
+int tableFull( char table[N][N]){
 
   	int v[N];
   	ultimoElementoColumn(v, table);
@@ -170,7 +170,7 @@ int resultadoTable(char table[N][N]){ // gana player1 1, gana player2 2, empate 
     	}
   	}
  
-	if(tableLlena(table))
+	if(tableFull(table))
 		return 3;
   
   	return 4;
@@ -296,7 +296,7 @@ int main(void) {
 				break;
 				
 		} else{
-			root=creaRoot(table);
+			root=createRoot(table);
 			Max_Value(root,alfa,beta,0);
 			column= tiradaRoot(root);
 

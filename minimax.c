@@ -13,7 +13,7 @@ double Max_Value(Node *p,double alfa, double beta,int level){
   	double v1;
 	for(int i=0;i<p->n_sons;i++){
 
-		p->sons[i]=creaNode(p,i,level+1);
+		p->sons[i]=createNode(p,i,level+1);
     	v1=Min_Value(p->sons[i],alfa,beta,level+1);
 
     	if(v1>p->value) 
@@ -48,7 +48,7 @@ double Min_Value(Node *p,double alfa, double beta,int level){
   	double v1;
 	
   	for(int i=0;i<p->n_sons;i++){
-    	p->sons[i]=creaNode(p,i,level+1);
+    	p->sons[i]=createNode(p,i,level+1);
     	v1=Max_Value(p->sons[i],alfa,beta,level+1);
     	
 		if(v1< p->value) 
@@ -73,7 +73,7 @@ double Min_Value(Node *p,double alfa, double beta,int level){
 
 }
 
-Node *creaNode(Node *father, int numSon, int level){
+Node *createNode(Node *father, int numSon, int level){
 
   Node *p=malloc(sizeof(Node));
   copyBoard(p->board,father->board);
@@ -92,7 +92,7 @@ Node *creaNode(Node *father, int numSon, int level){
 
 }
 
-Node *creaRoot(char table[N][N]){
+Node *createRoot(char table[N][N]){
 
   Node *p=malloc(sizeof(Node));
   copyBoard(p->board,table);
@@ -103,7 +103,7 @@ Node *creaRoot(char table[N][N]){
 
 }
 
-void mostraValue(Node *p,int level) {
+void showValue(Node *p,int level) {
 
     for(int i=0;i<level;i++)
         printf("\t");
