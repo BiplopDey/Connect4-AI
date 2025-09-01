@@ -1,15 +1,23 @@
-all: main
+CC := clang
+CFLAGS ?= -g -Wno-everything -pthread
+LDFLAGS ?= -lm
 
-CC = clang
-override CFLAGS += -g -Wno-everything -pthread -lm
+CORE_SRCS := connect4.c minimax.c
 
-SRCS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.c' -print)
+.PHONY: all clean
 
-main: $(SRCS)
-	$(CC) $(CFLAGS) $(SRCS) -o "$@"
+all: main engine
 
-main-debug: $(SRCS)
-	$(CC) $(CFLAGS) -O0 $(SRCS) -o "$@"
+# Interactive CLI game (uses main() in connect4.c)
+main: $(CORE_SRCS)
+	$(CC) $(CFLAGS) $(CORE_SRCS) -o "$@" $(LDFLAGS)
+
+# Headless engine that prints best AI column
+engine: engine_cli.c $(CORE_SRCS)
+	$(CC) $(CFLAGS) -DCONNECT4_DISABLE_CLI engine_cli.c $(CORE_SRCS) -o "$@" $(LDFLAGS)
+
+main-debug: $(CORE_SRCS)
+	$(CC) $(CFLAGS) -O0 $(CORE_SRCS) -o "$@" $(LDFLAGS)
 
 clean:
-	rm -f main main-debug
+	rm -f main main-debug engine

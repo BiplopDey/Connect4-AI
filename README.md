@@ -6,23 +6,67 @@
 
 
 ## Stack
-Programmed in C using AI's MiniMax algorithm with alpha-beta pruning.
+- C core with MiniMax + alpha-beta pruning
+- Headless engine binary for AI move selection
+- FastAPI backend exposing HTTP endpoints
+- Static web UI (vanilla JS) served by the backend
 
-## How to play
-You can play against the AI in the following link: https://replit.com/@BiplopDeyqwe/connect4
-Enter in the page and click the play button, then when it's your turn, press a key between 0-6 to pick a column.
-And to exit the game enter -1.
+## How to Play
+Run locally with Docker (below) and open the web UI. Click a column to drop your token (human = O, AI = X). The AI responds automatically.
 
-### Run locally with Docker
+### Quick Start (Docker)
 
-Build the image and run interactively:
+Build the image and run the web server:
 
 ```
 docker build -t connect4-ai .
-docker run --rm -it connect4-ai
+docker run --rm -p 8000:8000 connect4-ai
 ```
 
-The game runs in the container's terminal. Press keys 0–6 to choose a column, and -1 to exit.
+Open http://localhost:8000 and play in the browser.
+
+CLI build is still available inside the image (`/app/main`) but the default container entry runs the web server.
+
+### API Overview
+- `POST /api/new` → `{ board: number[7][7], next: "human"|"ai" }`
+- `POST /api/human-move` with body `{ board, column }` → `{ board, aiColumn?, result }`
+  - `result`: 1 = human win, 2 = AI win, 3 = draw, 4 = continue
+
+Example:
+
+```
+curl -X POST localhost:8000/api/new
+curl -X POST localhost:8000/api/human-move \
+  -H 'Content-Type: application/json' \
+  -d '{"board": [[0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0]], "column": 3}'
+```
+
+### Local Development (without Docker)
+
+Build C binaries:
+
+```
+make clean && make engine && make main
+```
+
+Run the web server:
+
+```
+pip install fastapi uvicorn[standard]
+export CONNECT4_ENGINE=$(pwd)/engine   # or set in your shell
+uvicorn server.app:app --reload --port 8000
+```
+
+Open http://localhost:8000
+
+### Configuration
+- Board size: currently fixed to 7x7 (see `connect4.h` `#define N 7`).
+- AI depth: `connect4.h` `#define K 6`. Increase for stronger AI (slower), rebuild.
+- Engine path: set `CONNECT4_ENGINE` env var (default `/app/engine` in Docker).
+
+### Deploy Online
+- Single container: `docker run -d -p 80:8000 connect4-ai` then point DNS to the host.
+- Behind a proxy: put behind Nginx/Traefik and proxy to `:8000`. Add TLS at the proxy.
 
 ## Enjoy playing 
-And let me knoy if you have won against the AI.
+And let me know if you have won against the AI.

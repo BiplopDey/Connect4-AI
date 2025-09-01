@@ -1,0 +1,130 @@
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
+import subprocess
+import os
+from typing import List, Literal, Optional, Tuple
+
+N = 7  # must match connect4.h
+
+app = FastAPI(title="Connect4 AI Server")
+
+static_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "web"))
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+
+def validate_board(board: List[List[int]]):
+    if not isinstance(board, list) or len(board) != N:
+        raise HTTPException(status_code=400, detail="Board must be a 7x7 array")
+    for row in board:
+        if not isinstance(row, list) or len(row) != N:
+            raise HTTPException(status_code=400, detail="Board must be a 7x7 array")
+        for v in row:
+            if v not in (0, 1, 2):
+                raise HTTPException(status_code=400, detail="Board cells must be 0,1,2")
+
+
+def put_token(board: List[List[int]], column: int, player: int) -> bool:
+    if column < 0 or column >= N:
+        return False
+    for i in range(N - 1, -1, -1):
+        if board[i][column] == 0:
+            board[i][column] = player
+            return True
+    return False
+
+
+def check_line(a1, a2, a3, a4):
+    return (a1 == 1 and a2 == 1 and a3 == 1 and a4 == 1) or (
+        a1 == 2 and a2 == 2 and a3 == 2 and a4 == 2
+    )
+
+
+def table_full(board: List[List[int]]):
+    for j in range(N):
+        if board[0][j] == 0:
+            return False
+    return True
+
+
+def result_table_ex(board: List[List[int]]) -> Tuple[Literal[1,2,3,4], Optional[List[List[int]]]]:
+    # returns (result, winning_line) where winning_line is 4 [row,col] pairs when result in {1,2}
+    for j in range(N):
+        for i in range(N - 3):
+            # vertical
+            if check_line(board[i][j], board[i + 1][j], board[i + 2][j], board[i + 3][j]):
+                return board[i][j], [[i + k, j] for k in range(4)]
+            # horizontal
+            if check_line(board[j][i], board[j][i + 1], board[j][i + 2], board[j][i + 3]):
+                return board[j][i], [[j, i + k] for k in range(4)]
+    # diag down-right
+    for i in range(N - 3):
+        for j in range(N - 3):
+            if check_line(board[i][j], board[i + 1][j + 1], board[i + 2][j + 2], board[i + 3][j + 3]):
+                return board[i][j], [[i + k, j + k] for k in range(4)]
+    # diag up-right
+    for i in range(3, N):
+        for j in range(N - 3):
+            if check_line(board[i][j], board[i - 1][j + 1], board[i - 2][j + 2], board[i - 3][j + 3]):
+                return board[i][j], [[i - k, j + k] for k in range(4)]
+    if table_full(board):
+        return 3, None
+    return 4, None
+
+
+def result_table(board: List[List[int]]) -> Literal[1, 2, 3, 4]:
+    r, _ = result_table_ex(board)
+    return r
+
+
+def ai_best_column(board: List[List[int]]) -> int:
+    engine_path = os.environ.get("CONNECT4_ENGINE", os.path.join(os.path.dirname(__file__), "..", "engine"))
+    engine_path = os.path.abspath(engine_path)
+    if not os.path.exists(engine_path):
+        raise RuntimeError("engine binary not found: %s" % engine_path)
+    # Prepare stdin payload: 7 lines of 7 ints
+    lines = [" ".join(str(v) for v in row) for row in board]
+    payload = "\n".join(lines) + "\n"
+    res = subprocess.run([engine_path], input=payload.encode(), capture_output=True)
+    if res.returncode != 0:
+        raise RuntimeError(f"engine error: {res.stderr.decode(errors='ignore')}")
+    out = res.stdout.decode().strip()
+    try:
+        return int(out)
+    except ValueError:
+        raise RuntimeError(f"invalid engine output: {out}")
+
+
+@app.post("/api/new")
+def new_game(human_starts: bool = True):
+    board = [[0 for _ in range(N)] for _ in range(N)]
+    next_player = "human" if human_starts else "ai"
+    return JSONResponse({"board": board, "next": next_player})
+
+
+@app.post("/api/human-move")
+def human_move(payload: dict):
+    board = payload.get("board")
+    column = payload.get("column")
+    validate_board(board)
+    if not isinstance(column, int):
+        raise HTTPException(status_code=400, detail="column must be int")
+
+    if not put_token(board, column, 1):
+        raise HTTPException(status_code=400, detail="Invalid or full column")
+
+    r, line = result_table_ex(board)
+    if r != 4:
+        return {"board": board, "result": r, "winLine": line}
+
+    # AI move
+    ai_col = ai_best_column(board)
+    put_token(board, ai_col, 2)
+    r2, line2 = result_table_ex(board)
+    return {"board": board, "aiColumn": ai_col, "result": r2, "winLine": line2}
+
+
+@app.get("/")
+def index():
+    index_path = os.path.join(static_dir, "index.html")
+    return FileResponse(index_path)

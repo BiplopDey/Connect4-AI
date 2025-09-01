@@ -12,17 +12,25 @@ WORKDIR /app
 # Copy source
 COPY . /app
 
-# Build the binary using the provided Makefile
+# Build engine + cli
 RUN make clean || true \
+ && make engine \
  && make main
 
 
-FROM debian:bookworm-slim AS runtime
+FROM python:3.11-slim AS runtime
 
 WORKDIR /app
 
-# Copy the built binary from builder stage
-COPY --from=builder /app/main /app/main
+# Copy binaries and app
+COPY --from=builder /app/engine /app/engine
+COPY server /app/server
+COPY web /app/web
 
-# Default to interactive play
-ENTRYPOINT ["/app/main"]
+ENV CONNECT4_ENGINE=/app/engine
+
+RUN pip install --no-cache-dir fastapi uvicorn[standard]
+
+EXPOSE 8000
+
+CMD ["uvicorn", "server.app:app", "--host", "0.0.0.0", "--port", "8000"]

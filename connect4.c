@@ -219,6 +219,7 @@ int numSons(char board[N][N]) {
   return count;
 }
 
+#ifndef CONNECT4_DISABLE_CLI
 int main(void) {
 
   int column;
@@ -311,3 +312,4 @@ int main(void) {
 
   return 0;
 }
+#endif // CONNECT4_DISABLE_CLI
