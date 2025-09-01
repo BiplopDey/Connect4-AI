@@ -1,0 +1,85 @@
+# OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# IDE/editor settings
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+*.swp
+*.swo
+
+# C/C++ build artifacts
+*.o
+*.obj
+*.lo
+*.la
+*.al
+*.a
+*.lib
+*.so
+*.so.*
+*.dylib
+*.dll
+
+# Executables
+*.exe
+*.out
+*.app
+*.elf
+*.i
+*.ii
+
+# Debug/linker files
+*.pdb
+*.idb
+*.exp
+*.map
+
+# Precompiled headers
+*.gch
+*.pch
+
+# Coverage files
+*.gcda
+*.gcno
+*.gcov
+
+# Dependency files
+*.d
+
+# Common build directories
+build/
+bin/
+lib/
+obj/
+Debug/
+Release/
+x64/
+x86/
+*.dSYM/
+
+# Tags and indexes
+tags
+TAGS
+*.tags
+cscope.files
+cscope.out
+cscope.in.out
+cscope.po.out
+
+# Tooling caches
+.ccls-cache/
+.clangd/
+.cache/
+
+# Logs and temp
+*.log
+*.tmp
+*.temp
+
