@@ -13,5 +13,16 @@ You can play against the AI in the following link: https://replit.com/@BiplopDey
 Enter in the page and click the play button, then when it's your turn, press a key between 0-6 to pick a column.
 And to exit the game enter -1.
 
+### Run locally with Docker
+
+Build the image and run interactively:
+
+```
+docker build -t connect4-ai .
+docker run --rm -it connect4-ai
+```
+
+The game runs in the container's terminal. Press keys 0–6 to choose a column, and -1 to exit.
+
 ## Enjoy playing 
 And let me knoy if you have won against the AI.

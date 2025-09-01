@@ -1,0 +1,44 @@
+# VCS
+.git
+.gitignore
+
+# IDE/editor
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# C/C++ build outputs
+*.o
+*.obj
+*.a
+*.so*
+*.dylib
+*.dll
+*.pdb
+*.exp
+*.lib
+*.gch
+*.pch
+*.d
+
+# Binaries
+main
+main-debug
+*.exe
+*.out
+*.app
+*.elf
+
+# Caches and misc
+.ccls-cache/
+.clangd/
+.cache/
+*.log
+*.tmp
+*.temp
+
+# Replit
+.replit
+replit.nix

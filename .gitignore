@@ -83,3 +83,10 @@ cscope.po.out
 *.tmp
 *.temp
 
+# Replit
+.replit
+replit.nix
+
+# Local build outputs
+main
+main-debug
