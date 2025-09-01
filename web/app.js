@@ -24,15 +24,6 @@ function render() {
   }
 }
 
-function findDropRow(b, col) {
-  for (let i = N - 1; i >= 0; i--) {
-    if (b[i][col] === 0) return i;
-  }
-  return -1;
-}
-
-function isColFull(col) { return board[0][col] !== 0; }
-
 function cellLeftPx(col) { return PAD + col * (CELL + GAP) + OFFSET; }
 function cellTopPx(row) { return PAD + row * (CELL + GAP) + OFFSET; }
 
@@ -73,21 +64,14 @@ async function onClickCol(e) {
   if (gameOver) return;
   const col = Number(e.currentTarget.dataset.col);
   if (!Number.isInteger(col) || col < 0 || col >= N) return;
-  if (isColFull(col)) return;
   locking = true;
   elStatus.textContent = 'AI thinking…';
 
-  // Predict human drop row and animate immediately
-  const hRow = findDropRow(board, col);
   const moveReq = fetch('/api/human-move', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ board, column: col }),
   });
-
-  await animateDrop(col, hRow, 1);
-  board[hRow][col] = 1;
-  render();
 
   let data;
   try {
@@ -101,14 +85,19 @@ async function onClickCol(e) {
     return;
   }
 
-  const hasAi = Number.isInteger(data.aiColumn);
+  // Animate human move as confirmed by backend
+  if (Number.isInteger(data.humanRow)) {
+    await animateDrop(col, data.humanRow, 1);
+    board[data.humanRow][col] = 1;
+    render();
+  }
+
+  const hasAi = Number.isInteger(data.aiColumn) && Number.isInteger(data.aiRow);
   if (hasAi) {
     // Delay AI response for a more natural feel
     const AI_DELAY_MS = 700;
     await new Promise(r => setTimeout(r, AI_DELAY_MS));
-    const aiCol = data.aiColumn;
-    const aiRow = findDropRow(board, aiCol);
-    await animateDrop(aiCol, aiRow, 2);
+    await animateDrop(data.aiColumn, data.aiRow, 2);
   }
 
   // Sync with server state and render final position

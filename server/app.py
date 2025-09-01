@@ -24,14 +24,15 @@ def validate_board(board: List[List[int]]):
                 raise HTTPException(status_code=400, detail="Board cells must be 0,1,2")
 
 
-def put_token(board: List[List[int]], column: int, player: int) -> bool:
+def put_token(board: List[List[int]], column: int, player: int) -> int:
+    """Place a token for player in column. Returns row index or -1 if invalid/full."""
     if column < 0 or column >= N:
-        return False
+        return -1
     for i in range(N - 1, -1, -1):
         if board[i][column] == 0:
             board[i][column] = player
-            return True
-    return False
+            return i
+    return -1
 
 
 def check_line(a1, a2, a3, a4):
@@ -78,6 +79,23 @@ def result_table(board: List[List[int]]) -> Literal[1, 2, 3, 4]:
 
 
 def ai_best_column(board: List[List[int]]) -> int:
+    """Return best AI column (player=2).
+
+    First, do a fast tactical check: if any legal column wins immediately for AI,
+    play it. Otherwise, defer to the compiled engine (minimax) for selection.
+    """
+    # 1) Immediate winning move check
+    for col in range(N):
+        if board[0][col] != 0:
+            continue  # column full
+        b = [row[:] for row in board]
+        if put_token(b, col, 2) == -1:
+            continue
+        res, _ = result_table_ex(b)
+        if res == 2:
+            return col
+
+    # 2) Fall back to engine
     engine_path = os.environ.get("CONNECT4_ENGINE", os.path.join(os.path.dirname(__file__), "..", "engine"))
     engine_path = os.path.abspath(engine_path)
     if not os.path.exists(engine_path):
@@ -110,18 +128,32 @@ def human_move(payload: dict):
     if not isinstance(column, int):
         raise HTTPException(status_code=400, detail="column must be int")
 
-    if not put_token(board, column, 1):
+    # If game is already finished, just return final state
+    r0, line0 = result_table_ex(board)
+    if r0 != 4:
+        return {"board": board, "result": r0, "winLine": line0}
+
+    # Apply human move
+    human_row = put_token(board, column, 1)
+    if human_row == -1:
         raise HTTPException(status_code=400, detail="Invalid or full column")
 
     r, line = result_table_ex(board)
     if r != 4:
-        return {"board": board, "result": r, "winLine": line}
+        return {"board": board, "result": r, "winLine": line, "humanRow": human_row}
 
     # AI move
     ai_col = ai_best_column(board)
-    put_token(board, ai_col, 2)
+    ai_row = put_token(board, ai_col, 2)
     r2, line2 = result_table_ex(board)
-    return {"board": board, "aiColumn": ai_col, "result": r2, "winLine": line2}
+    return {
+        "board": board,
+        "humanRow": human_row,
+        "aiColumn": ai_col,
+        "aiRow": ai_row,
+        "result": r2,
+        "winLine": line2,
+    }
 
 
 @app.get("/")
