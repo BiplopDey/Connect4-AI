@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+    branches: ["master", "main"]
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run pytest inside Docker
+        run: |
+          docker run --rm \
+            -v "$PWD":/app \
+            -w /app \
+            python:3.11 \
+            bash -lc "pip install -r requirements-dev.txt && PYTHONPATH=/app pytest"

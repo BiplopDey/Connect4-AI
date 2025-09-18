@@ -77,11 +77,18 @@ cscope.po.out
 .ccls-cache/
 .clangd/
 .cache/
+.pytest_cache/
 
 # Logs and temp
 *.log
 *.tmp
 *.temp
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
 
 # Replit
 .replit
