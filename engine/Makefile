@@ -4,7 +4,7 @@ LDFLAGS ?= -lm
 
 CORE_SRCS := connect4.c minimax.c
 
-.PHONY: all clean
+.PHONY: all clean test minimax_tests
 
 all: main engine
 
@@ -16,8 +16,14 @@ main: $(CORE_SRCS)
 engine: engine_cli.c $(CORE_SRCS)
 	$(CC) $(CFLAGS) -DCONNECT4_DISABLE_CLI engine_cli.c $(CORE_SRCS) -o "$@" $(LDFLAGS)
 
+minimax_tests: test_minimax.c $(CORE_SRCS)
+	$(CC) $(CFLAGS) -DCONNECT4_DISABLE_CLI test_minimax.c $(CORE_SRCS) -o "$@" $(LDFLAGS)
+
+test: minimax_tests
+	./minimax_tests
+
 main-debug: $(CORE_SRCS)
 	$(CC) $(CFLAGS) -O0 $(CORE_SRCS) -o "$@" $(LDFLAGS)
 
 clean:
-	rm -f main main-debug engine
+	rm -f main main-debug engine minimax_tests

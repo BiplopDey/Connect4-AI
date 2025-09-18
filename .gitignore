@@ -97,3 +97,4 @@ replit.nix
 # Local build outputs
 main
 main-debug
+engine/minimax_tests

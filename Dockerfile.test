@@ -2,6 +2,11 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+      clang make \
+ && rm -rf /var/lib/apt/lists/*
+
 COPY requirements-dev.txt ./
 RUN pip install --no-cache-dir -r requirements-dev.txt
 
@@ -9,4 +14,4 @@ COPY . .
 
 ENV PYTHONPATH=/app
 
-CMD ["pytest"]
+CMD ["bash", "-lc", "make -C engine minimax_tests && ./engine/minimax_tests && pytest"]
