@@ -46,14 +46,16 @@ curl -X POST localhost:8000/api/human-move \
 Build C binaries:
 
 ```
+cd engine
 make clean && make engine && make main
+cd ..
 ```
 
 Run the web server:
 
 ```
 pip install fastapi uvicorn[standard]
-export CONNECT4_ENGINE=$(pwd)/engine   # or set in your shell
+export CONNECT4_ENGINE=$(pwd)/engine/engine   # or set in your shell
 uvicorn server.app:app --reload --port 8000
 ```
 
@@ -62,7 +64,7 @@ Open http://localhost:8000
 ### Configuration
 - Board size: currently fixed to 7x7 (see `connect4.h` `#define N 7`).
 - AI depth: `connect4.h` `#define K 6`. Increase for stronger AI (slower), rebuild.
-- Engine path: set `CONNECT4_ENGINE` env var (default `/app/engine` in Docker).
+- Engine path: set `CONNECT4_ENGINE` env var (default `/app/engine/engine` in Docker).
 
 ### Deploy Online
 - Single container: `docker run -d -p 80:8000 connect4-ai` then point DNS to the host.

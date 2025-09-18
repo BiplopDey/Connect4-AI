@@ -96,7 +96,10 @@ def ai_best_column(board: List[List[int]]) -> int:
             return col
 
     # 2) Fall back to engine
-    engine_path = os.environ.get("CONNECT4_ENGINE", os.path.join(os.path.dirname(__file__), "..", "engine"))
+    engine_path = os.environ.get(
+        "CONNECT4_ENGINE",
+        os.path.join(os.path.dirname(__file__), "..", "engine", "engine"),
+    )
     engine_path = os.path.abspath(engine_path)
     if not os.path.exists(engine_path):
         raise RuntimeError("engine binary not found: %s" % engine_path)

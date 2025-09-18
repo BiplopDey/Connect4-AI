@@ -13,9 +13,9 @@ WORKDIR /app
 COPY . /app
 
 # Build engine + cli
-RUN make clean || true \
- && make engine \
- && make main
+RUN make -C engine clean || true \
+ && make -C engine engine \
+ && make -C engine main
 
 
 FROM python:3.11-slim AS runtime
@@ -27,7 +27,7 @@ COPY --from=builder /app/engine /app/engine
 COPY server /app/server
 COPY web /app/web
 
-ENV CONNECT4_ENGINE=/app/engine
+ENV CONNECT4_ENGINE=/app/engine/engine
 
 RUN pip install --no-cache-dir fastapi uvicorn[standard]
 
