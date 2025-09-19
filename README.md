@@ -31,6 +31,7 @@ CLI build is still available inside the image (`/app/main`) but the default cont
 - `POST /api/new` → `{ board: number[7][7], next: "human"|"ai" }`
 - `POST /api/human-move` with body `{ board, column }` → `{ board, aiColumn?, result }`
   - `result`: 1 = human win, 2 = AI win, 3 = draw, 4 = continue
+- `GET /health` → `{ status: "ok", enginePath: string }` when the engine binary is available (503 otherwise)
 
 Example:
 
@@ -69,6 +70,7 @@ Open http://localhost:8000
 ### Deploy Online
 - Single container: `docker run -d -p 80:8000 connect4-ai` then point DNS to the host.
 - Behind a proxy: put behind Nginx/Traefik and proxy to `:8000`. Add TLS at the proxy.
+- Managed hosting (e.g. Render): point the health check path to `/health` so deployments verify the engine is present before going live.
 
 ## Enjoy playing 
 And let me know if you have won against the AI.

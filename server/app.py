@@ -13,6 +13,15 @@ static_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "web"
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 
+def resolve_engine_path() -> str:
+    """Return absolute path to the compiled engine binary."""
+    engine_path = os.environ.get(
+        "CONNECT4_ENGINE",
+        os.path.join(os.path.dirname(__file__), "..", "engine", "engine"),
+    )
+    return os.path.abspath(engine_path)
+
+
 def validate_board(board: List[List[int]]):
     if not isinstance(board, list) or len(board) != N:
         raise HTTPException(status_code=400, detail="Board must be a 7x7 array")
@@ -96,11 +105,7 @@ def ai_best_column(board: List[List[int]]) -> int:
             return col
 
     # 2) Fall back to engine
-    engine_path = os.environ.get(
-        "CONNECT4_ENGINE",
-        os.path.join(os.path.dirname(__file__), "..", "engine", "engine"),
-    )
-    engine_path = os.path.abspath(engine_path)
+    engine_path = resolve_engine_path()
     if not os.path.exists(engine_path):
         raise RuntimeError("engine binary not found: %s" % engine_path)
     # Prepare stdin payload: 7 lines of 7 ints
@@ -157,6 +162,14 @@ def human_move(payload: dict):
         "result": r2,
         "winLine": line2,
     }
+
+
+@app.get("/health")
+def health():
+    engine_path = resolve_engine_path()
+    if not os.path.exists(engine_path):
+        raise HTTPException(status_code=503, detail="engine binary not found")
+    return {"status": "ok", "enginePath": engine_path}
 
 
 @app.get("/")

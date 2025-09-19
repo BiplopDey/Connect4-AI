@@ -57,3 +57,23 @@ def test_human_move_returns_finished_game():
     data = response.json()
     assert data["result"] == 1
     assert "aiColumn" not in data
+
+
+def test_health_ok(monkeypatch):
+    monkeypatch.setattr("server.app.os.path.exists", lambda path: True)
+
+    response = client.get("/health")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "ok"
+    assert "enginePath" in payload
+
+
+def test_health_missing_engine(monkeypatch):
+    monkeypatch.setattr("server.app.os.path.exists", lambda path: False)
+
+    response = client.get("/health")
+
+    assert response.status_code == 503
+    assert response.json()["detail"] == "engine binary not found"
