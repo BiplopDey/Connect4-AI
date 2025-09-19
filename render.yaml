@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: connect4-ai
+    env: docker
+    plan: free
+    region: frankfurt
+    autoDeploy: yes
+    repo: https://github.com/BiplopDey/Connect4-AI
+    branch: master
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: CONNECT4_ENGINE
+        value: /app/engine/engine
