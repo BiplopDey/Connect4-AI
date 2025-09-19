@@ -14,8 +14,7 @@ COPY . /app
 
 # Build engine + cli
 RUN make -C engine clean || true \
- && make -C engine engine \
- && make -C engine main
+ && make -C engine engine
 
 
 FROM python:3.11-slim AS runtime

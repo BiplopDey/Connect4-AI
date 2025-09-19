@@ -48,7 +48,7 @@ Build C binaries:
 
 ```
 cd engine
-make clean && make engine && make main
+make clean && make engine
 cd ..
 ```
 
