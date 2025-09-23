@@ -14,4 +14,4 @@ COPY . .
 
 ENV PYTHONPATH=/app
 
-CMD ["bash", "-lc", "make -C engine minimax_tests connect4_tests engine && ./engine/minimax_tests && ./engine/connect4_tests && pytest"]
+CMD ["bash", "-lc", "make -C engine minimax_tests connect4_tests engine && ./engine/minimax_tests && ./engine/connect4_tests && pytest tests/test_frontend_ui.py tests/test_unit_app.py tests/test_integration_app.py tests/test_engine_cli.py"]

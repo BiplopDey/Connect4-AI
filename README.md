@@ -25,6 +25,13 @@ docker run --rm -p 8000:8000 connect4-ai
 
 Open http://localhost:8000 and play in the browser.
 
+To run the full engine, API, and front-end test matrix in a container, build and execute the dedicated test image:
+
+```
+docker build -f Dockerfile.test -t connect4-ai-test .
+docker run --rm connect4-ai-test
+```
+
 CLI build is still available inside the image (`/app/main`) but the default container entry runs the web server.
 
 ### API Overview

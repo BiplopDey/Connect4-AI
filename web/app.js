@@ -9,16 +9,56 @@ const elBoard = document.getElementById('board');
 const elStatus = document.getElementById('status');
 const elNewGame = document.getElementById('new-game');
 
+const BASE_CELL_CLASSES = [
+  'cell',
+  'relative',
+  'flex',
+  'items-center',
+  'justify-center',
+  'w-[72px]',
+  'h-[72px]',
+  'rounded-full',
+  'bg-gradient-to-b',
+  'from-slate-900',
+  'to-slate-950',
+  'shadow-[inset_0_0_0_2px_rgba(55,65,81,1)]',
+  'cursor-pointer',
+  'transition-transform',
+  'duration-150',
+  'hover:-translate-y-0.5',
+].join(' ');
+
+const BASE_TOKEN_CLASSES = [
+  'token',
+  'w-[56px]',
+  'h-[56px]',
+  'rounded-full',
+  'bg-slate-800',
+  'transition-colors',
+  'duration-150',
+].join(' ');
+
+const HUMAN_TOKEN_CLASSES = ['bg-token-human', 'shadow-lg'];
+const AI_TOKEN_CLASSES = ['bg-token-ai', 'shadow-lg'];
+
 function render() {
   elBoard.innerHTML = '';
   for (let i = 0; i < N; i++) {
     for (let j = 0; j < N; j++) {
       const v = board[i][j];
       const cell = document.createElement('div');
-      cell.className = 'cell' + (v === 1 ? ' human' : v === 2 ? ' ai' : '');
+      cell.className = BASE_CELL_CLASSES;
       cell.dataset.col = j;
       cell.dataset.row = i;
       cell.addEventListener('click', onClickCol);
+      const token = document.createElement('div');
+      token.className = BASE_TOKEN_CLASSES;
+      if (v === 1) {
+        token.classList.add(...HUMAN_TOKEN_CLASSES);
+      } else if (v === 2) {
+        token.classList.add(...AI_TOKEN_CLASSES);
+      }
+      cell.appendChild(token);
       elBoard.appendChild(cell);
     }
   }
@@ -30,7 +70,8 @@ function cellTopPx(row) { return PAD + row * (CELL + GAP) + OFFSET; }
 function animateDrop(col, row, player) {
   return new Promise(resolve => {
     const piece = document.createElement('div');
-    piece.className = 'piece-floating ' + (player === 1 ? 'human' : 'ai');
+    piece.className = 'piece-floating';
+    piece.dataset.player = player === 1 ? 'human' : 'ai';
     piece.style.left = cellLeftPx(col) + 'px';
     piece.style.setProperty('--target', cellTopPx(row) + 'px');
     // duration slightly depends on distance for realism
@@ -137,6 +178,8 @@ function highlightWin(line) {
   for (const [r, c] of line) {
     const idx = r * N + c;
     const cell = cells[idx];
-    if (cell) cell.classList.add('win');
+    if (!cell) continue;
+    cell.classList.add('ring-4', 'ring-yellow-300', 'ring-offset-2', 'ring-offset-slate-900');
+    cell.style.boxShadow = '0 0 18px rgba(253, 224, 71, 0.65)';
   }
 }
