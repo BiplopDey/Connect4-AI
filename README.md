@@ -64,7 +64,7 @@ Open http://localhost:8000
 
 ### Configuration
 - Board size: currently fixed to 7x7 (see `connect4.h` `#define N 7`).
-- AI depth: `connect4.h` `#define K 6`. Increase for stronger AI (slower), rebuild.
+- AI depth: `connect4.h` `#define K 8`. Increase for stronger AI (slower), rebuild.
 - Engine path: set `CONNECT4_ENGINE` env var (default `/app/engine/engine` in Docker).
 
 ### Deploy Online

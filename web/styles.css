@@ -14,7 +14,9 @@ body {
   color: var(--text);
 }
 .container { max-width: 980px; margin: 28px auto 48px; padding: 16px; }
-h1 { margin-top: 0; letter-spacing: .3px; text-align: center; text-shadow: 0 2px 18px rgba(59,130,246,0.15); }
+.top-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.title { margin: 0; letter-spacing: .3px; text-shadow: 0 2px 18px rgba(59,130,246,0.15); }
+.deploy-tag { padding: 6px 12px; border-radius: 999px; background: rgba(59,130,246,0.18); color: var(--text); font-size: 0.9rem; white-space: nowrap; }
 .controls { margin: 12px 0 16px; }
 button { background: var(--accent); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
 button:hover { filter: brightness(1.05); }

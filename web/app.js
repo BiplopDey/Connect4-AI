@@ -1,3 +1,5 @@
+const DEPLOYMENT_TAG = 'render-free-k8';
+const DEPLOYMENT_OWNER = 'Biplop Dey';
 const N = 7; // must match backend
 let board = Array.from({ length: N }, () => Array(N).fill(0));
 let locking = false;
@@ -8,6 +10,11 @@ const CELL = 72, GAP = 8, PAD = 8, PIECE = 56, OFFSET = (CELL - PIECE) / 2; // p
 const elBoard = document.getElementById('board');
 const elStatus = document.getElementById('status');
 const elNewGame = document.getElementById('new-game');
+const elDeployTag = document.getElementById('deploy-tag');
+
+if (elDeployTag) {
+  elDeployTag.textContent = `${DEPLOYMENT_TAG} • ${DEPLOYMENT_OWNER}`;
+}
 
 function render() {
   elBoard.innerHTML = '';
@@ -94,9 +101,6 @@ async function onClickCol(e) {
 
   const hasAi = Number.isInteger(data.aiColumn) && Number.isInteger(data.aiRow);
   if (hasAi) {
-    // Delay AI response for a more natural feel
-    const AI_DELAY_MS = 700;
-    await new Promise(r => setTimeout(r, AI_DELAY_MS));
     await animateDrop(data.aiColumn, data.aiRow, 2);
   }
 
