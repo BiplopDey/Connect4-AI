@@ -1,23 +1,23 @@
 Benchmarking depths on input /home/biplop/Documents/Connect4-AI/Connect4-AI/performance/board_empty.txt
-Original depth: K=10
+Default depth: 10
 
-K=6
+depth=6
 3
-0:00.01 real, 2024 KB maxrss
+0:00.08 real, 1892 KB maxrss
 
-K=7
+depth=7
 3
-0:00.02 real, 1900 KB maxrss
+0:00.15 real, 1900 KB maxrss
 
-K=8
+depth=8
 3
-0:00.03 real, 1900 KB maxrss
+0:00.36 real, 1896 KB maxrss
 
-K=9
+depth=9
 3
-0:00.20 real, 2024 KB maxrss
+0:00.81 real, 1896 KB maxrss
 
-K=10
+depth=10
 3
-0:00.29 real, 1948 KB maxrss
+0:02.94 real, 2024 KB maxrss
 

@@ -1,0 +1,6 @@
+#ifndef ENGINE_CONFIG_H
+#define ENGINE_CONFIG_H
+
+#define ENGINE_DEFAULT_MAX_DEPTH 10
+
+#endif // ENGINE_CONFIG_H

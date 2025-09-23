@@ -5,7 +5,7 @@ import subprocess
 import os
 from typing import List, Literal, Optional, Tuple
 
-N = 7  # must match connect4.h
+N = 7  # must match engine/board.h
 
 app = FastAPI(title="Connect4 AI Server")
 

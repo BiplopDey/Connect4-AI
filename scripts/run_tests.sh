@@ -17,7 +17,7 @@ if ! command -v make >/dev/null 2>&1; then
 fi
 
 set -x
-make -C engine minimax_tests connect4_tests engine
-./engine/minimax_tests
-./engine/connect4_tests
+make -C engine search_tests board_tests engine
+./engine/search_tests
+./engine/board_tests
 pytest

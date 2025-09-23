@@ -3,8 +3,8 @@ set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 ROOT_DIR=$(cd "${SCRIPT_DIR}/.." && pwd)
-HEADER_PATH="${ROOT_DIR}/engine/connect4.h"
 ENGINE_DIR="${ROOT_DIR}/engine"
+CONFIG_PATH="${ENGINE_DIR}/config.h"
 ENGINE_BIN="${ENGINE_DIR}/engine"
 BOARD_INPUT="${SCRIPT_DIR}/board_empty.txt"
 RESULTS_FILE="${SCRIPT_DIR}/depth_benchmark_results.txt"
@@ -14,35 +14,20 @@ if [[ ! -f "${BOARD_INPUT}" ]]; then
   exit 1
 fi
 
-original_define=$(grep -E '^#define K [0-9]+' "${HEADER_PATH}" || true)
-if [[ -z "${original_define}" ]]; then
-  echo "could not locate '#define K <value>' in ${HEADER_PATH}" >&2
-  exit 1
-fi
+DEFAULT_DEPTH=$(awk '/ENGINE_DEFAULT_MAX_DEPTH/ {print $3}' "${CONFIG_PATH}" | tail -n 1)
 
-original_k=$(awk '{print $3}' <<<"${original_define}")
+make -C "${ENGINE_DIR}" clean >/dev/null
+make -C "${ENGINE_DIR}" engine >/dev/null
 
-restore_k() {
-  if [[ -n "${original_k}" ]]; then
-    perl -0pi -e "s/#define K \\d+/#define K ${original_k}/" "${HEADER_PATH}"
-    make -C "${ENGINE_DIR}" clean >/dev/null
-    make -C "${ENGINE_DIR}" engine >/dev/null
-  fi
-}
-
-trap restore_k EXIT
-
->"${RESULTS_FILE}"
+: >"${RESULTS_FILE}"
 
 printf "Benchmarking depths on input %s\n" "${BOARD_INPUT}" | tee -a "${RESULTS_FILE}"
-printf "Original depth: K=%s\n\n" "${original_k}" | tee -a "${RESULTS_FILE}"
+printf "Default depth: %s\n\n" "${DEFAULT_DEPTH:-unknown}" | tee -a "${RESULTS_FILE}"
 
-for k in 6 7 8 9 10; do
-  perl -0pi -e "s/#define K \\d+/#define K ${k}/" "${HEADER_PATH}"
-  make -C "${ENGINE_DIR}" clean >/dev/null
-  make -C "${ENGINE_DIR}" engine >/dev/null
-
-  printf "K=%s\n" "${k}" | tee -a "${RESULTS_FILE}"
-  /usr/bin/time -f "%E real, %M KB maxrss" "${ENGINE_BIN}" < "${BOARD_INPUT}" 2> >(tee -a "${RESULTS_FILE}" >&2) | tee -a "${RESULTS_FILE}"
+for depth in 6 7 8 9 10; do
+  printf "depth=%s\n" "${depth}" | tee -a "${RESULTS_FILE}"
+  ENGINE_MAX_DEPTH="${depth}" /usr/bin/time -f "%E real, %M KB maxrss" \
+    "${ENGINE_BIN}" < "${BOARD_INPUT}" 2> >(tee -a "${RESULTS_FILE}" >&2) |
+    tee -a "${RESULTS_FILE}"
   printf "\n" | tee -a "${RESULTS_FILE}"
 done

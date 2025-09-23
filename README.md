@@ -63,8 +63,8 @@ uvicorn server.app:app --reload --port 8000
 Open http://localhost:8000
 
 ### Configuration
-- Board size: currently fixed to 7x7 (see `connect4.h` `#define N 7`).
-- AI depth: `connect4.h` `#define K 8`. Increase for stronger AI (slower), rebuild.
+- Board size: currently fixed to 7x7 (see `engine/board.h` `#define N 7`).
+- AI depth: override at runtime with `ENGINE_MAX_DEPTH` (default defined in `engine/config.h`).
 - Engine path: set `CONNECT4_ENGINE` env var (default `/app/engine/engine` in Docker).
 
 ### Automated tests
@@ -86,4 +86,3 @@ scripts/run_tests.sh
    render deploys create srv-d36tq1ffte5s73aos0c0 --confirm --wait --output text
    ```
 3. Wait for the CLI to report `succeeded`, then smoke-test the live app.
-

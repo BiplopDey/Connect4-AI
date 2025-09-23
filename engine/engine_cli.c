@@ -1,39 +1,49 @@
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "connect4.h"
-#include "minimax.h"
+#include "board.h"
+#include "config.h"
+#include "evaluation.h"
+#include "search.h"
 
-// Simple CLI that reads a 7x7 board of ints (0,1,2) from stdin
-// row-major, whitespace-separated (7 lines of 7 numbers is fine),
-// computes the AI (player 2) best column and prints it.
 int main(void) {
-  char table[N][N];
+  Board board;
+  board_init(&board);
 
-  // Read 49 integers (0/1/2) row-major
-  for (int i = 0; i < N; i++) {
-    for (int j = 0; j < N; j++) {
-      int v;
-      if (scanf("%d", &v) != 1) {
+  for (int row = 0; row < N; row++) {
+    for (int col = 0; col < N; col++) {
+      int value;
+      if (scanf("%d", &value) != 1) {
         fprintf(stderr, "Invalid board input. Expect 49 integers.\n");
         return 2;
       }
-      if (v < 0 || v > 2) {
-        fprintf(stderr, "Invalid cell value %d at (%d,%d).\n", v, i, j);
+      if (value < 0 || value > 2) {
+        fprintf(stderr, "Invalid cell value %d at (%d,%d).\n", value, row,
+                col);
         return 2;
       }
-      table[i][j] = (char)v;
+      board.cells[row][col] = (char)value;
     }
   }
 
-  Node *root = createRoot(table);
-  double alpha = -Inf, beta = Inf;
-  Max_Value(root, alpha, beta, 0);
-  int column = tossRoot(root);
+  SearchConfig config;
+  search_config_init(&config);
+  config.maximizing_player = PLAYER_TWO;
 
-  // free root children (Max_Value kept root->sons for tossRoot)
-  destroyNode(root);
+  const char *depth_env = getenv("ENGINE_MAX_DEPTH");
+  if (depth_env) {
+    char *end = NULL;
+    long depth = strtol(depth_env, &end, 10);
+    if (end != depth_env && depth > 0 && depth < INT_MAX) {
+      config.max_depth = (int)depth;
+    }
+  }
 
+  if (config.max_depth <= 0)
+    config.max_depth = ENGINE_DEFAULT_MAX_DEPTH;
+
+  int column = search_best_move(&board, PLAYER_TWO, &config);
   printf("%d\n", column);
-  return 0;
+  return column < 0 ? 1 : 0;
 }
