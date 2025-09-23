@@ -67,10 +67,23 @@ Open http://localhost:8000
 - AI depth: `connect4.h` `#define K 8`. Increase for stronger AI (slower), rebuild.
 - Engine path: set `CONNECT4_ENGINE` env var (default `/app/engine/engine` in Docker).
 
+### Automated tests
+Run the automated C and Python test suite locally with:
+
+```bash
+scripts/run_tests.sh
+```
+
 ### Deploy Online
 - Single container: `docker run -d -p 80:8000 connect4-ai` then point DNS to the host.
 - Behind a proxy: put behind Nginx/Traefik and proxy to `:8000`. Add TLS at the proxy.
 - Managed hosting (e.g. Render): point the health check path to `/health` so deployments verify the engine is present before going live.
 
-## Enjoy playing 
-And let me know if you have won against the AI.
+#### Render workflow
+1. Commit and push to the branch Render tracks (currently `master`).
+2. Trigger a deploy with the Render CLI:
+   ```bash
+   render deploys create srv-d36tq1ffte5s73aos0c0 --confirm --wait --output text
+   ```
+3. Wait for the CLI to report `succeeded`, then smoke-test the live app.
+
