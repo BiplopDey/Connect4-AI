@@ -4,6 +4,7 @@ void showValue(Node *p, int level);
 
 double Min_Value(Node *p, double alpha, double beta, int level);
 double Max_Value(Node *p, double alpha, double beta, int level);
+void destroyNode(Node *node);
 
 int checkLineHeur(int a1, int a2, int a3, int a4, int player,
                   int lengthConnect);

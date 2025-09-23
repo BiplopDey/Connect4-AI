@@ -22,21 +22,21 @@ static int generateMoves(const char board[N][N], int *out_columns) {
   return count;
 }
 
-static void destroyNodeShallow(Node *node) {
+static void freeNodeRecursive(Node *node) {
   if (!node)
     return;
 
   if (node->sons) {
-    for (int i = 0; i < node->n_sons; i++) {
-      if (node->sons[i])
-        destroyNodeShallow(node->sons[i]);
-    }
+    for (int i = 0; i < node->n_sons; i++)
+      freeNodeRecursive(node->sons[i]);
     free(node->sons);
   }
 
   free(node->columns);
   free(node);
 }
+
+void destroyNode(Node *node) { freeNodeRecursive(node); }
 
 double Max_Value(Node *p, double alpha, double beta, int level) {
 
@@ -55,7 +55,7 @@ double Max_Value(Node *p, double alpha, double beta, int level) {
 
     if (v1 >= beta) {
       double v = p->value;
-      destroyNodeShallow(p->sons[i]);
+      destroyNode(p->sons[i]);
       p->sons[i] = NULL;
       return v;
     }
@@ -64,7 +64,7 @@ double Max_Value(Node *p, double alpha, double beta, int level) {
       alpha = v1;
 
     if (level != 0) { // don't kill the sons of the root, because is needed
-      destroyNodeShallow(p->sons[i]);
+      destroyNode(p->sons[i]);
       p->sons[i] = NULL;
     }
   }
@@ -88,7 +88,7 @@ double Min_Value(Node *p, double alpha, double beta, int level) {
 
     if (v1 <= alpha) {
       double v = p->value;
-      destroyNodeShallow(p->sons[i]);
+      destroyNode(p->sons[i]);
       p->sons[i] = NULL;
       return v;
     }
@@ -96,7 +96,7 @@ double Min_Value(Node *p, double alpha, double beta, int level) {
     if (v1 < beta)
       beta = v1;
 
-    destroyNodeShallow(p->sons[i]);
+    destroyNode(p->sons[i]);
     p->sons[i] = NULL;
   }
 
@@ -121,7 +121,7 @@ Node *createNode(Node *father, int numSon, int level) {
     int moves[N];
     p->n_sons = generateMoves(p->board, moves);
     if (p->n_sons > 0) {
-      p->sons = malloc(p->n_sons * sizeof(Node *));
+      p->sons = calloc(p->n_sons, sizeof(Node *));
       p->columns = malloc(p->n_sons * sizeof(int));
       memcpy(p->columns, moves, p->n_sons * sizeof(int));
     } else {
@@ -146,7 +146,7 @@ Node *createRoot(char table[N][N]) {
   int moves[N];
   p->n_sons = generateMoves(p->board, moves);
   if (p->n_sons > 0) {
-    p->sons = malloc(p->n_sons * sizeof(Node *));
+    p->sons = calloc(p->n_sons, sizeof(Node *));
     p->columns = malloc(p->n_sons * sizeof(int));
     memcpy(p->columns, moves, p->n_sons * sizeof(int));
   } else {

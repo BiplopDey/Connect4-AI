@@ -3,11 +3,11 @@ Original depth: K=10
 
 K=6
 3
-0:00.01 real, 1900 KB maxrss
+0:00.01 real, 2024 KB maxrss
 
 K=7
 3
-0:00.02 real, 1888 KB maxrss
+0:00.02 real, 1900 KB maxrss
 
 K=8
 3
@@ -15,9 +15,9 @@ K=8
 
 K=9
 3
-0:00.20 real, 1892 KB maxrss
+0:00.20 real, 2024 KB maxrss
 
 K=10
 3
-0:00.27 real, 1960 KB maxrss
+0:00.29 real, 1948 KB maxrss
 

@@ -32,16 +32,7 @@ int main(void) {
   int column = tossRoot(root);
 
   // free root children (Max_Value kept root->sons for tossRoot)
-  for (int i = 0; i < root->n_sons; i++) {
-    if (root->sons[i]) {
-      free(root->sons[i]->sons);
-      free(root->sons[i]->columns);
-      free(root->sons[i]);
-    }
-  }
-  free(root->sons);
-  free(root->columns);
-  free(root);
+  destroyNode(root);
 
   printf("%d\n", column);
   return 0;
