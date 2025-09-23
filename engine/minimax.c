@@ -1,8 +1,42 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "connect4.h"
 #include "minimax.h"
+
+static const int move_order[N] = {3, 4, 2, 5, 1, 6, 0};
+
+static int generateMoves(const char board[N][N], int *out_columns) {
+  int count = 0;
+
+  for (int i = 0; i < N; i++) {
+    int column = move_order[i];
+    if (board[0][column] == 0) {
+      if (out_columns)
+        out_columns[count] = column;
+      count++;
+    }
+  }
+
+  return count;
+}
+
+static void destroyNodeShallow(Node *node) {
+  if (!node)
+    return;
+
+  if (node->sons) {
+    for (int i = 0; i < node->n_sons; i++) {
+      if (node->sons[i])
+        destroyNodeShallow(node->sons[i]);
+    }
+    free(node->sons);
+  }
+
+  free(node->columns);
+  free(node);
+}
 
 double Max_Value(Node *p, double alpha, double beta, int level) {
 
@@ -21,8 +55,8 @@ double Max_Value(Node *p, double alpha, double beta, int level) {
 
     if (v1 >= beta) {
       double v = p->value;
-      free(p->sons[i]->sons);
-      free(p->sons[i]);
+      destroyNodeShallow(p->sons[i]);
+      p->sons[i] = NULL;
       return v;
     }
 
@@ -30,8 +64,8 @@ double Max_Value(Node *p, double alpha, double beta, int level) {
       alpha = v1;
 
     if (level != 0) { // don't kill the sons of the root, because is needed
-      free(p->sons[i]->sons);
-      free(p->sons[i]);
+      destroyNodeShallow(p->sons[i]);
+      p->sons[i] = NULL;
     }
   }
 
@@ -54,16 +88,16 @@ double Min_Value(Node *p, double alpha, double beta, int level) {
 
     if (v1 <= alpha) {
       double v = p->value;
-      free(p->sons[i]->sons);
-      free(p->sons[i]);
+      destroyNodeShallow(p->sons[i]);
+      p->sons[i] = NULL;
       return v;
     }
 
     if (v1 < beta)
       beta = v1;
 
-    free(p->sons[i]->sons);
-    free(p->sons[i]);
+    destroyNodeShallow(p->sons[i]);
+    p->sons[i] = NULL;
   }
 
   return p->value;
@@ -71,16 +105,33 @@ double Min_Value(Node *p, double alpha, double beta, int level) {
 
 Node *createNode(Node *father, int numSon, int level) {
   Node *p = malloc(sizeof(Node));
+  p->sons = NULL;
+  p->columns = NULL;
+  p->n_sons = 0;
   copyBoard(p->board, father->board);
-  tokenRoll(p->board, numSon,
-            level); // numSon is the son's number, that goes between  0 to ...
+
+  int column;
+  if (father->columns)
+    column = father->columns[numSon];
+  else
+    column = numSonToColumn(father->board, numSon);
+  putToken(p->board, column, level % 2 + 1);
 
   if (level < K) {
-    p->n_sons = numSons(p->board);
-    p->sons = malloc(p->n_sons * sizeof(Node *));
+    int moves[N];
+    p->n_sons = generateMoves(p->board, moves);
+    if (p->n_sons > 0) {
+      p->sons = malloc(p->n_sons * sizeof(Node *));
+      p->columns = malloc(p->n_sons * sizeof(int));
+      memcpy(p->columns, moves, p->n_sons * sizeof(int));
+    } else {
+      p->sons = NULL;
+      p->columns = NULL;
+    }
   } else {
     p->n_sons = 0;
-    p->sons = NULL; // malloc(0);
+    p->sons = NULL;
+    p->columns = NULL;
   }
 
   return p;
@@ -88,9 +139,20 @@ Node *createNode(Node *father, int numSon, int level) {
 
 Node *createRoot(char table[N][N]) {
   Node *p = malloc(sizeof(Node));
+  p->sons = NULL;
+  p->columns = NULL;
+  p->n_sons = 0;
   copyBoard(p->board, table);
-  p->n_sons = numSons(p->board);
-  p->sons = malloc(p->n_sons * sizeof(Node *));
+  int moves[N];
+  p->n_sons = generateMoves(p->board, moves);
+  if (p->n_sons > 0) {
+    p->sons = malloc(p->n_sons * sizeof(Node *));
+    p->columns = malloc(p->n_sons * sizeof(int));
+    memcpy(p->columns, moves, p->n_sons * sizeof(int));
+  } else {
+    p->sons = NULL;
+    p->columns = NULL;
+  }
 
   return p;
 }
@@ -188,6 +250,5 @@ int tossRoot(Node *p) { // what column toss before  minimax
       j = i;
     }
 
-  // the son number j what column correspond to the p->board?
-  return numSonToColumn(p->board, j);
+  return p->columns[j];
 }

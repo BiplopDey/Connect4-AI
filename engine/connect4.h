@@ -1,6 +1,6 @@
 
 #define N 7
-#define K 8 // K=level, depth tree
+#define K 10 // K=level, depth tree
 
 #define Inf 10000000
 
@@ -8,6 +8,7 @@ typedef struct Node {
 
   char board[N][N];
   struct Node **sons;
+  int *columns;
   int n_sons;
   double value;
 
