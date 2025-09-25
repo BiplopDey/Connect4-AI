@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "board.h"
-#include "config.h"
-#include "evaluation.h"
-#include "search.h"
+#include "engine/board.h"
+#include "engine/config.h"
+#include "engine/evaluation.h"
+#include "engine/search.h"
 
 int main(void) {
   Board board;

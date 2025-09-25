@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#include "board.h"
+#include "engine/board.h"
 
 static Board make_board(void) {
   Board board;

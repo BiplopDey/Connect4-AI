@@ -44,11 +44,19 @@ curl -X POST localhost:8000/api/human-move \
 
 ### Local Development (without Docker)
 
-Build C binaries:
+Build the C engine binaries:
 
 ```
 cd engine
 make clean && make engine
+cd ..
+```
+
+Run the engine unit tests (optional while iterating):
+
+```
+cd engine
+make test
 cd ..
 ```
 
@@ -62,9 +70,14 @@ uvicorn server.app:app --reload --port 8000
 
 Open http://localhost:8000
 
+### Engine Layout
+- Public headers live in `engine/include/engine`.
+- Core implementations live in `engine/src` grouped by responsibility (board, evaluation, search, CLI).
+- C unit tests live in `engine/tests` and are runnable via `make test`.
+
 ### Configuration
-- Board size: currently fixed to 7x7 (see `engine/board.h` `#define N 7`).
-- AI depth: override at runtime with `ENGINE_MAX_DEPTH` (default defined in `engine/config.h`).
+- Board size: currently fixed to 7x7 (see `engine/include/engine/board.h` `#define N 7`).
+- AI depth: override at runtime with `ENGINE_MAX_DEPTH` (default defined in `engine/include/engine/config.h`).
 - Engine path: set `CONNECT4_ENGINE` env var (default `/app/engine/engine` in Docker).
 
 ### Automated tests

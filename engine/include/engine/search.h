@@ -1,8 +1,8 @@
-#ifndef SEARCH_H
-#define SEARCH_H
+#ifndef ENGINE_SEARCH_H
+#define ENGINE_SEARCH_H
 
-#include "board.h"
-#include "evaluation.h"
+#include "engine/board.h"
+#include "engine/evaluation.h"
 
 typedef void (*MoveOrderFn)(const Board *board, int *columns, int count);
 
@@ -18,4 +18,4 @@ void search_config_init(SearchConfig *config);
 int search_best_move(const Board *board, Player to_move,
                      const SearchConfig *config);
 
-#endif // SEARCH_H
+#endif // ENGINE_SEARCH_H

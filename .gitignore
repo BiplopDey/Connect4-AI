@@ -97,4 +97,8 @@ replit.nix
 # Local build outputs
 main
 main-debug
+engine/engine
+engine/search_tests
+engine/board_tests
+engine/evaluation_tests
 engine/minimax_tests

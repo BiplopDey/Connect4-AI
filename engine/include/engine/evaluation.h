@@ -1,7 +1,7 @@
-#ifndef EVALUATION_H
-#define EVALUATION_H
+#ifndef ENGINE_EVALUATION_H
+#define ENGINE_EVALUATION_H
 
-#include "board.h"
+#include "engine/board.h"
 
 typedef struct {
   int win_score;
@@ -20,4 +20,4 @@ typedef double (*HeuristicFn)(const Board *board, Player maximizer,
 double evaluation_default(const Board *board, Player maximizer,
                           const EvaluationWeights *weights);
 
-#endif // EVALUATION_H
+#endif // ENGINE_EVALUATION_H

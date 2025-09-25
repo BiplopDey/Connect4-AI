@@ -1,9 +1,9 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "board.h"
-#include "evaluation.h"
-#include "search.h"
+#include "engine/board.h"
+#include "engine/evaluation.h"
+#include "engine/search.h"
 
 static Board make_board(void) {
   Board board;

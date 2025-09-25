@@ -1,5 +1,5 @@
-#ifndef BOARD_H
-#define BOARD_H
+#ifndef ENGINE_BOARD_H
+#define ENGINE_BOARD_H
 
 #include <stdbool.h>
 
@@ -22,4 +22,4 @@ int board_available_rows(const Board *board, int out_rows[N]);
 int board_legal_moves(const Board *board, int out_columns[N]);
 Player board_cell(const Board *board, int row, int col);
 
-#endif // BOARD_H
+#endif // ENGINE_BOARD_H

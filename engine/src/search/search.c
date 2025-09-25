@@ -1,5 +1,5 @@
-#include "search.h"
-#include "config.h"
+#include "engine/search.h"
+#include "engine/config.h"
 
 #include <float.h>
 #include <math.h>

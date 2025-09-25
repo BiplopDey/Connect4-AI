@@ -1,4 +1,4 @@
-#include "board.h"
+#include "engine/board.h"
 
 #include <stdbool.h>
 
