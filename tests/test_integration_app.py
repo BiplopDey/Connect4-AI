@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 
 from server.app import N, app
+from server.config import Settings, get_settings
 
 
 client = TestClient(app)
@@ -26,7 +27,7 @@ def test_new_game_ai_starts():
 
 
 def test_human_move_triggers_ai(monkeypatch):
-    monkeypatch.setattr("server.app.ai_best_column", lambda board: 1)
+    monkeypatch.setattr("server.services.ai.AIMoveSelector.select_move", lambda self, board: 1)
     board = make_board()
 
     response = client.post("/api/human-move", json={"board": board, "column": 0})
@@ -59,8 +60,29 @@ def test_human_move_returns_finished_game():
     assert "aiColumn" not in data
 
 
+def _override_settings(monkeypatch, *, engine_exists: bool):
+    class DummyPath:
+        def __init__(self, exists: bool) -> None:
+            self._exists = exists
+
+        def exists(self) -> bool:  # pragma: no cover - trivial
+            return self._exists
+
+        def __str__(self) -> str:
+            return "/tmp/engine"
+
+    current = get_settings()
+    settings = Settings(
+        board_size=current.board_size,
+        static_dir=current.static_dir,
+        engine_path=DummyPath(engine_exists),
+    )
+
+    monkeypatch.setattr("server.api.routes.get_settings", lambda: settings)
+
+
 def test_health_ok(monkeypatch):
-    monkeypatch.setattr("server.app.os.path.exists", lambda path: True)
+    _override_settings(monkeypatch, engine_exists=True)
 
     response = client.get("/health")
 
@@ -71,7 +93,7 @@ def test_health_ok(monkeypatch):
 
 
 def test_health_missing_engine(monkeypatch):
-    monkeypatch.setattr("server.app.os.path.exists", lambda path: False)
+    _override_settings(monkeypatch, engine_exists=False)
 
     response = client.get("/health")
 

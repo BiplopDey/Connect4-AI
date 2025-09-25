@@ -75,6 +75,11 @@ Open http://localhost:8000
 - Core implementations live in `engine/src` grouped by responsibility (board, evaluation, search, CLI).
 - C unit tests live in `engine/tests` and are runnable via `make test`.
 
+### Server Layout
+- FastAPI startup is defined in `server/app.py` with routers mounted from `server/api`.
+- Core configuration resides in `server/config.py`; dependencies live in `server/dependencies.py` for easy overrides.
+- Domain logic is grouped under `server/domain`, while orchestration services sit in `server/services`.
+
 ### Configuration
 - Board size: currently fixed to 7x7 (see `engine/include/engine/board.h` `#define N 7`).
 - AI depth: override at runtime with `ENGINE_MAX_DEPTH` (default defined in `engine/include/engine/config.h`).
